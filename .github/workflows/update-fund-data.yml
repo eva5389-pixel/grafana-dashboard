@@ -26,12 +26,14 @@ jobs:
       - name: Update daily fund data
         env:
           TWELVE_DATA_API_KEY: ${{ secrets.TWELVE_DATA_API_KEY }}
+          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
         run: python src/update_dashboard.py
       - name: Generate Grafana dashboard
         run: python src/generate_dashboard.py
       - name: Save month-end snapshot
         env:
           TWELVE_DATA_API_KEY: ${{ secrets.TWELVE_DATA_API_KEY }}
+          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
         run: |
           if [ "$(date -u -d tomorrow +%d)" = "01" ]; then
             MONTH_END=1 python src/update_dashboard.py

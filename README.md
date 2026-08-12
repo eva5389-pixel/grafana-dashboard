@@ -11,9 +11,16 @@
 
 平台涵蓋台灣、日本、韓國、香港、中國、美國、半導體、光通訊、量子電腦、金融及醫療。排名使用一年報酬、Benchmark 超額報酬、六個月動能、夏普指數與最大回撤，另列回撤恢復天數及研究訊號。
 
+## 資料來源原則
+
+- 基富通公開基金總覽用於核對基金名稱、分類及網站公布的績效；其頁面標示基金資料來自 Morningstar。
+- Twelve Data 優先用於設定檔中有明確代碼的市場價格與 Benchmark 歷史序列；失敗時以 Apify/Yahoo Finance 備援。
+- 網站未提供的歷史資料不推測、不補值；儀表板會顯示「待資料」。
+- 不使用基富通登入帳戶資料，也不以未公開介面繞過網站限制。
+
 ## 安全設定
 
-GitHub Actions Repository Secret 必須命名為 `TWELVE_DATA_API_KEY`。API Key 不得寫入程式碼、Dashboard JSON 或提交紀錄。
+GitHub Actions Repository Secrets 使用 `TWELVE_DATA_API_KEY` 與 `APIFY_API_TOKEN`。兩者至少設定一個；任何 Token 都不得寫入程式碼、Dashboard JSON 或提交紀錄。
 
 ## Grafana 匯入
 

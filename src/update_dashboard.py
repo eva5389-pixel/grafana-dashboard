@@ -104,6 +104,51 @@ def fetch_closes(symbol: str, api_key: str) -> list[float]:
     return [float(row["close"]) for row in reversed(rows) if row.get("close")]
 
 
+def fetch_apify_closes(symbol: str, token: str) -> list[float]:
+    """Fetch one year of daily Yahoo Finance history through Apify."""
+    endpoint = "https://api.apify.com/v2/acts/canadesk~yahoo-finance/run-sync-get-dataset-items"
+    request = urllib.request.Request(
+        f"{endpoint}?{urllib.parse.urlencode({'token': token})}",
+        data=json.dumps({
+            "tickers": [symbol],
+            "period": "1y",
+            "interval": "1d",
+            "process": "gh",
+            "storecsv": "no",
+            "proxy": {"useApifyProxy": True},
+        }).encode("utf-8"),
+        headers={"Content-Type": "application/json", "User-Agent": "grafana-fund-dashboard/1.0"},
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=180) as response:
+        payload = json.load(response)
+    records = payload if isinstance(payload, list) else [payload]
+    points = next((item.get("data", []) for item in records if item.get("ticker") == symbol), [])
+    dated = sorted(
+        ((point.get("Date") or point.get("date"), point.get("close")) for point in points),
+        key=lambda item: item[0] or "",
+    )
+    values = [float(close) for _, close in dated if close not in (None, "")]
+    if len(values) < 2:
+        raise RuntimeError(f"No usable Apify history for {symbol}")
+    return values
+
+
+def fetch_market_closes(symbol: str, twelve_key: str, apify_token: str) -> tuple[list[float], str]:
+    errors = []
+    if twelve_key:
+        try:
+            return fetch_closes(symbol, twelve_key), "Twelve Data"
+        except Exception as exc:
+            errors.append(f"Twelve Data: {type(exc).__name__}")
+    if apify_token:
+        try:
+            return fetch_apify_closes(symbol, apify_token), "Apify/Yahoo"
+        except Exception as exc:
+            errors.append(f"Apify: {type(exc).__name__}")
+    raise RuntimeError("; ".join(errors) or "No market-data credential")
+
+
 def fmt(value: float | int | None, percent: bool = False) -> str:
     if value is None:
         return ""
@@ -131,9 +176,10 @@ def score(row: dict) -> float:
 
 def main() -> int:
     api_key = os.environ.get("TWELVE_DATA_API_KEY", "")
+    apify_token = os.environ.get("APIFY_API_TOKEN", "")
     allow_pending = os.environ.get("ALLOW_PENDING", "0") == "1"
-    if not api_key and not allow_pending:
-        print("TWELVE_DATA_API_KEY is required", file=sys.stderr)
+    if not api_key and not apify_token and not allow_pending:
+        print("TWELVE_DATA_API_KEY or APIFY_API_TOKEN is required", file=sys.stderr)
         return 2
 
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
@@ -145,12 +191,12 @@ def main() -> int:
         category = categories[fund["category"]]
         symbol = fund.get("twelve_data_symbol", "").strip()
         row = {**fund, "category_name": category["name"], "benchmark": category["benchmark_symbol"]}
-        if symbol and api_key:
+        if symbol and (api_key or apify_token):
             try:
-                fund_values = fetch_closes(symbol, api_key)
+                fund_values, provider = fetch_market_closes(symbol, api_key, apify_token)
                 benchmark_symbol = category["benchmark_symbol"]
                 if benchmark_symbol not in benchmark_cache:
-                    benchmark_cache[benchmark_symbol] = fetch_closes(benchmark_symbol, api_key)
+                    benchmark_cache[benchmark_symbol], _ = fetch_market_closes(benchmark_symbol, api_key, apify_token)
                 benchmark_values = benchmark_cache[benchmark_symbol]
                 length = min(len(fund_values), len(benchmark_values))
                 fund_values, benchmark_values = fund_values[-length:], benchmark_values[-length:]
@@ -161,14 +207,18 @@ def main() -> int:
                     "sharpe": sharpe(fund_values[-252:], config["risk_free_rate"]),
                     "max_drawdown": max_drawdown(fund_values),
                     "recovery_days": recovery_days(fund_values),
-                    "status": "已更新",
+                    "status": f"已更新（{provider}）",
                 })
                 if row["return_1y"] is not None and row["benchmark_return_1y"] is not None:
                     row["excess_return_1y"] = row["return_1y"] - row["benchmark_return_1y"]
             except Exception as exc:  # keep one bad symbol from blocking every category
                 row["status"] = f"API錯誤: {type(exc).__name__}"
         else:
-            row["status"] = "待填Twelve Data代碼"
+            if fund.get("seed_return_1y") is not None:
+                row["return_1y"] = fund["seed_return_1y"]
+                row["status"] = "MoneyDJ報酬；其餘待API"
+            else:
+                row["status"] = "待填Twelve Data代碼"
         row["signal"] = signal(row)
         row["score"] = score(row)
         rows.append(row)
@@ -176,6 +226,19 @@ def main() -> int:
     grouped: dict[str, list[dict]] = defaultdict(list)
     for row in rows:
         grouped[row["category"]].append(row)
+    for category_id, category in categories.items():
+        if not grouped[category_id]:
+            grouped[category_id].append({
+                "category": category_id,
+                "category_name": category["name"],
+                "name": "基金清單建置中",
+                "moneydj_id": "",
+                "twelve_data_symbol": "",
+                "benchmark": category["benchmark_symbol"],
+                "signal": "待資料",
+                "status": "待建立基金清單",
+                "score": -99,
+            })
     for category_rows in grouped.values():
         category_rows.sort(key=score, reverse=True)
         for rank, row in enumerate(category_rows[:10], 1):
@@ -201,7 +264,11 @@ def main() -> int:
     for category_id in categories:
         write_csv(CATEGORY_DATA / f"{category_id}.csv", grouped.get(category_id, [])[:10])
 
-    metadata = {"updated_at": datetime.now(timezone.utc).isoformat(), "rows": len(ranked), "verified_rows": sum(r.get("status") == "已更新" for r in ranked)}
+    metadata = {
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "rows": len(ranked),
+        "verified_rows": sum(str(r.get("status", "")).startswith("已更新") for r in ranked),
+    }
     (DATA / "status.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     today = date.today()
