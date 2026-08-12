@@ -6,17 +6,23 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = json.loads((ROOT / "config" / "funds.json").read_text(encoding="utf-8"))
-BASE = "https://raw.githubusercontent.com/eva5389-pixel/grafana-dashboard/main/data/categories"
-
-
 def table_panel(category: dict, index: int) -> dict:
+    csv_data = (ROOT / "data" / "categories" / f"{category['id']}.csv").read_text(encoding="utf-8-sig")
     return {
         "id": index + 2,
         "title": f"{category['name']}｜基金 Top 10",
         "type": "table",
         "gridPos": {"x": (index % 2) * 12, "y": 5 + (index // 2) * 9, "w": 12, "h": 9},
         "datasource": {"type": "yesoreyeram-infinity-datasource", "uid": "${datasource}"},
-        "targets": [{"refId": "A", "type": "csv", "source": "url", "url": f"{BASE}/{category['id']}.csv", "format": "table", "parser": "backend"}],
+        "targets": [{"refId": "A", "type": "csv", "source": "inline", "data": csv_data, "format": "table", "parser": "backend"}],
+        "transformations": [{
+            "id": "organize",
+            "options": {
+                "indexByName": {"rank": 0, "name": 1, "return_1y": 2, "benchmark": 3, "excess_return_1y": 4, "momentum_6m": 5, "sharpe": 6, "max_drawdown": 7, "recovery_days": 8, "signal": 9, "status": 10},
+                "excludeByName": {"category_name": True, "moneydj_id": True, "twelve_data_symbol": True, "benchmark_return_1y": True},
+                "renameByName": {"rank": "排名", "name": "基金", "return_1y": "一年報酬%", "benchmark": "Benchmark", "excess_return_1y": "超額報酬%", "momentum_6m": "六個月動能%", "sharpe": "夏普", "max_drawdown": "最大回撤%", "recovery_days": "恢復天數", "signal": "訊號", "status": "資料狀態"}
+            }
+        }],
         "fieldConfig": {
             "defaults": {"custom": {"align": "auto", "cellOptions": {"type": "auto"}}},
             "overrides": [
