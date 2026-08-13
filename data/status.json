@@ -1,5 +1,8 @@
 {
-  "updated_at": "2026-08-13T02:03:59.009742+00:00",
-  "rows": 21,
-  "verified_rows": 0
+  "updated_at": "2026-08-13T04:59:31.909946+00:00",
+  "rows": 54,
+  "verified_rows": 51,
+  "source_rows": 1152,
+  "source": "1150806Fund Performance活動更新版.xlsm",
+  "limitations": "活動績效表為快照；無逐日序列的基金最大回撤與恢復期留空"
 }

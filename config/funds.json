@@ -34,5 +34,8 @@
     ,{"category": "taiwan", "moneydj_id": "AC0001", "name": "野村鴻運基金", "twelve_data_symbol": ""}
     ,{"category": "china", "moneydj_id": "ACJF132-8434", "name": "摩根中國雙息平衡基金-月配型(台幣)", "twelve_data_symbol": ""}
     ,{"category": "healthcare", "moneydj_id": "ACFT73-9209", "name": "富蘭克林華美全球醫療保健基金(台幣)", "twelve_data_symbol": ""}
+    ,{"category": "semiconductor", "moneydj_id": "", "yahoo_fund_id": "F0GBR04AMX:FO", "name": "貝萊德世界科技基金 A2", "twelve_data_symbol": "", "local_nav_file": "F0GBR04AMX_FO.csv"}
+    ,{"category": "japan", "moneydj_id": "", "yahoo_fund_id": "F00000W0VS:FO", "name": "瀚亞投資-日本動力股票基金Az(南非幣避險)", "twelve_data_symbol": "", "local_nav_file": "F00000W0VS_FO.csv"}
+    ,{"category": "hong_kong", "moneydj_id": "", "yahoo_fund_id": "F000000F7U:FO", "name": "安聯香港股票基金-A配息類股(美元)", "twelve_data_symbol": "", "local_nav_file": "F000000F7U_FO.csv"}
   ]
 }

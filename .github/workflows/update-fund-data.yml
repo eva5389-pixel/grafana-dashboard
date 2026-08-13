@@ -42,6 +42,8 @@ jobs:
           APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
           ENABLE_MSTARPY: "1"
         run: python src/update_dashboard.py
+      - name: Merge verified workbook rankings
+        run: python src/build_rankings_from_workbook.py
       - name: Generate Grafana dashboard
         run: python src/generate_dashboard.py
       - name: Save month-end snapshot
