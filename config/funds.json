@@ -7,6 +7,7 @@
     "policy": "FundRich public pages are used for candidate verification and published performance only; automated historical calculations require a licensed/API source."
   },
   "categories": [
+    {"id": "overall_top5", "name": "全市場精選 Top 5", "benchmark_symbol": "各分類Benchmark"},
     {"id": "taiwan", "name": "台灣", "benchmark_symbol": "EWT"},
     {"id": "japan", "name": "日本", "benchmark_symbol": "EWJ"},
     {"id": "korea", "name": "韓國", "benchmark_symbol": "EWY"},

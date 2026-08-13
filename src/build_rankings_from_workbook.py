@@ -223,6 +223,32 @@ def main() -> int:
                               + match["max_drawdown"] / 2)
         match["signal"] = signal(match)
         match["status"] = "已更新（Yahoo台灣下載 + 活動績效表 Benchmark）"
+    # Cross-category shortlist: use published one-year performance, remove the
+    # same fund/share-class family when it appears in multiple market or theme
+    # panels, and retain its original benchmark for context.
+    overall_candidates = []
+    for source_category, source_rows in grouped.items():
+        if source_category == "overall_top5":
+            continue
+        for source_row in source_rows:
+            if source_row.get("return_1y") is None:
+                continue
+            candidate = dict(source_row)
+            candidate["source_category"] = candidate.get("category_name", "")
+            candidate["category"] = "overall_top5"
+            candidate["category_name"] = categories["overall_top5"]["name"]
+            candidate["status"] = f"來源分類：{candidate['source_category']}；{candidate.get('status', '')}"
+            overall_candidates.append(candidate)
+    overall_candidates.sort(key=lambda row: row["return_1y"], reverse=True)
+    overall_seen = set()
+    for candidate in overall_candidates:
+        key = family_key(candidate["name"])
+        if key in overall_seen:
+            continue
+        overall_seen.add(key)
+        grouped["overall_top5"].append(candidate)
+        if len(grouped["overall_top5"]) == 5:
+            break
     fields = ["rank", "category_name", "name", "moneydj_id", "twelve_data_symbol", "benchmark",
               "return_1y", "benchmark_return_1y", "excess_return_1y", "momentum_6m", "sharpe",
               "max_drawdown", "recovery_days", "score", "signal", "quantum_coverage",

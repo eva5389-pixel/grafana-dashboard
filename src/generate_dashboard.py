@@ -19,7 +19,7 @@ def table_panel(category: dict, index: int) -> dict:
                          "optical_holdings": True, "optical_as_of": True})
     return {
         "id": index + 2,
-        "title": f"{category['name']}｜基金 Top 10",
+        "title": category["name"] if category["id"] == "overall_top5" else f"{category['name']}｜基金 Top 10",
         "type": "table",
         "gridPos": {"x": (index % 2) * 12, "y": 5 + (index // 2) * 9, "w": 12, "h": 9},
         "datasource": {"type": "yesoreyeram-infinity-datasource", "uid": "${datasource}"},
