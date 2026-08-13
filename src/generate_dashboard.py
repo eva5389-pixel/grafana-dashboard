@@ -8,6 +8,11 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = json.loads((ROOT / "config" / "funds.json").read_text(encoding="utf-8"))
 def table_panel(category: dict, index: int) -> dict:
     csv_data = (ROOT / "data" / "categories" / f"{category['id']}.csv").read_text(encoding="utf-8-sig")
+    quantum = category["id"] == "quantum"
+    excluded = {"category_name": True, "moneydj_id": True, "twelve_data_symbol": True, "benchmark_return_1y": True}
+    if not quantum:
+        excluded.update({"quantum_coverage": True, "quantum_exposure": True,
+                         "quantum_holdings": True, "holdings_as_of": True})
     return {
         "id": index + 2,
         "title": f"{category['name']}｜基金 Top 10",
@@ -18,9 +23,9 @@ def table_panel(category: dict, index: int) -> dict:
         "transformations": [{
             "id": "organize",
             "options": {
-                "indexByName": {"rank": 0, "name": 1, "return_1y": 2, "benchmark": 3, "excess_return_1y": 4, "momentum_6m": 5, "sharpe": 6, "max_drawdown": 7, "recovery_days": 8, "score": 9, "signal": 10, "status": 11},
-                "excludeByName": {"category_name": True, "moneydj_id": True, "twelve_data_symbol": True, "benchmark_return_1y": True},
-                "renameByName": {"rank": "排名", "name": "基金", "return_1y": "一年報酬%", "benchmark": "Benchmark", "excess_return_1y": "超額報酬%", "momentum_6m": "六個月動能%", "sharpe": "夏普", "max_drawdown": "最大回撤%", "recovery_days": "恢復天數", "score": "綜合評分", "signal": "訊號", "status": "資料狀態"}
+                "indexByName": {"rank": 0, "name": 1, "quantum_coverage": 2, "quantum_exposure": 3, "quantum_holdings": 4, "holdings_as_of": 5, "return_1y": 6, "benchmark": 7, "excess_return_1y": 8, "momentum_6m": 9, "sharpe": 10, "max_drawdown": 11, "recovery_days": 12, "score": 13, "signal": 14, "status": 15},
+                "excludeByName": excluded,
+                "renameByName": {"rank": "排名", "name": "基金", "quantum_coverage": "供應鏈家數", "quantum_exposure": "相關持股%", "quantum_holdings": "實際持股", "holdings_as_of": "持股日期", "return_1y": "一年報酬%", "benchmark": "Benchmark", "excess_return_1y": "超額報酬%", "momentum_6m": "六個月動能%", "sharpe": "夏普", "max_drawdown": "最大回撤%", "recovery_days": "恢復天數", "score": "綜合評分", "signal": "訊號", "status": "資料狀態"}
             }
         }],
         "fieldConfig": {
