@@ -37,3 +37,13 @@ GitHub Actions Repository Secrets 使用 `TWELVE_DATA_API_KEY` 與 `APIFY_API_TO
 - MStarpy（MIT）：基金搜尋與公開淨值介接。
 - QuantStats（Apache-2.0）：報酬序列風險指標。
 - 本專案不複製第三方資料庫；僅在更新時呼叫已設定的資料來源。
+
+## MoneyDJ匯出檔
+
+使用者正常匯出的歷史淨值CSV或XLSX可先標準化：
+
+```bash
+python src/import_moneydj.py 匯出檔.xlsx --output data/nav/基金代碼.csv
+```
+
+匯入器會辨識常見的「日期／淨值」欄位、去除重複日期並輸出 `date,nav`；無法辨識或不足兩筆時會停止，不猜測資料。
