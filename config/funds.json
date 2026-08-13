@@ -21,6 +21,7 @@
     {"id": "bond", "name": "債券型", "benchmark_symbol": "AGG"},
     {"id": "semiconductor", "name": "半導體", "benchmark_symbol": "SOXX"},
     {"id": "memory", "name": "記憶體", "benchmark_symbol": "SOXX"},
+    {"id": "robotics", "name": "機器人", "benchmark_symbol": "BOTZ"},
     {"id": "optical", "name": "光通訊", "benchmark_symbol": "IYZ"},
     {"id": "quantum", "name": "量子電腦", "benchmark_symbol": "QTUM"},
     {"id": "finance", "name": "金融", "benchmark_symbol": "XLF"},

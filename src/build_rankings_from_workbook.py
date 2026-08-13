@@ -224,6 +224,35 @@ def main() -> int:
             "memory_as_of": holding["as_of"],
             "status": f"已驗證記憶體供應鏈持股；Benchmark資料不足；{holding['source']}",
         })
+    robotics_path = Path(__file__).resolve().parents[1] / "config" / "robotics_holdings.json"
+    for holding in json.loads(robotics_path.read_text(encoding="utf-8")):
+        item = next((candidate for candidate in raw if candidate["name"] == holding["name"]), None)
+        if item is None:
+            continue
+        return_1y = number(item.get("return_1y"))
+        momentum = number(item.get("momentum_6m"))
+        try:
+            sharpe_value = float(item["sharpe"])
+        except (TypeError, ValueError):
+            sharpe_value = None
+        theme_score = holding["exposure"] + holding["coverage"] * 0.05
+        score_value = (return_1y + momentum + sharpe_value / 5 + theme_score
+                       if None not in (return_1y, momentum, sharpe_value) else None)
+        grouped["robotics"].append({
+            "category": "robotics", "category_name": categories["robotics"]["name"],
+            "name": item["name"], "moneydj_id": "", "twelve_data_symbol": "",
+            "benchmark": categories["robotics"]["benchmark_symbol"],
+            "return_1y": return_1y, "benchmark_return_1y": None,
+            "excess_return_1y": None, "momentum_6m": momentum,
+            "sharpe": sharpe_value, "max_drawdown": None, "recovery_days": None,
+            "score": score_value,
+            "signal": "買進" if score_value is not None and score_value >= 2 else "觀察",
+            "robotics_coverage": holding["coverage"],
+            "robotics_exposure": holding["exposure"],
+            "robotics_holdings": holding["holdings"],
+            "robotics_as_of": holding["as_of"],
+            "status": f"已驗證機器人供應鏈持股；Benchmark資料不足；{holding['source']}",
+        })
     for fund in config["funds"]:
         local_file = fund.get("local_nav_file", "").strip()
         if not local_file:
@@ -292,7 +321,8 @@ def main() -> int:
               "max_drawdown", "recovery_days", "score", "signal", "quantum_coverage",
               "quantum_exposure", "quantum_holdings", "holdings_as_of", "optical_coverage",
               "optical_exposure", "optical_holdings", "optical_as_of", "memory_coverage",
-              "memory_exposure", "memory_holdings", "memory_as_of", "status"]
+              "memory_exposure", "memory_holdings", "memory_as_of", "robotics_coverage",
+              "robotics_exposure", "robotics_holdings", "robotics_as_of", "status"]
     ranked = []
     CATEGORY_DATA.mkdir(parents=True, exist_ok=True)
     for category, meta in categories.items():
@@ -325,6 +355,7 @@ def main() -> int:
             formatted["quantum_exposure"] = fmt(row.get("quantum_exposure"), percent=True)
             formatted["optical_exposure"] = fmt(row.get("optical_exposure"), percent=True)
             formatted["memory_exposure"] = fmt(row.get("memory_exposure"), percent=True)
+            formatted["robotics_exposure"] = fmt(row.get("robotics_exposure"), percent=True)
             formatted["sharpe"] = fmt(row.get("sharpe"))
             formatted["score"] = fmt(row.get("score"))
             output.append(formatted)
