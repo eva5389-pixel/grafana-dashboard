@@ -150,6 +150,28 @@ def fetch_market_closes(symbol: str, twelve_key: str, apify_token: str) -> tuple
     raise RuntimeError("; ".join(errors) or "No market-data credential")
 
 
+def yahoo_symbol_candidates(identifier: str) -> list[str]:
+    """Return stable Yahoo fund symbol variants without duplicate requests."""
+    value = identifier.strip()
+    if not value:
+        return []
+    candidates = [value]
+    if value.upper().endswith(":FO"):
+        candidates.append(value[:-3])
+    return list(dict.fromkeys(candidates))
+
+
+def fetch_yahoo_fund_closes(identifier: str, apify_token: str) -> tuple[list[float], str]:
+    """Try Yahoo Taiwan's fund id and its bare Morningstar id via Apify."""
+    errors = []
+    for candidate in yahoo_symbol_candidates(identifier):
+        try:
+            return fetch_apify_closes(candidate, apify_token), f"Apify/Yahoo {candidate}"
+        except Exception as exc:
+            errors.append(f"{candidate}: {type(exc).__name__}")
+    raise RuntimeError("; ".join(errors) or "No Yahoo fund id")
+
+
 def fetch_mstarpy_nav(identifier: str, session=None) -> tuple[list[float], object]:
     """Return Morningstar NAV history through optional MIT-licensed mstarpy.
 
@@ -239,6 +261,7 @@ def main() -> int:
     for fund in config["funds"]:
         category = categories[fund["category"]]
         symbol = fund.get("twelve_data_symbol", "").strip()
+        yahoo_fund_id = fund.get("yahoo_fund_id", "").strip()
         morningstar_id = fund.get("morningstar_id", "").strip()
         row = {**fund, "category_name": category["name"], "benchmark": category["benchmark_symbol"]}
         fund_values = None
@@ -254,6 +277,11 @@ def main() -> int:
                 fund_values, provider = fetch_market_closes(symbol, api_key, apify_token)
             except Exception as exc:
                 row["status"] = f"市場API錯誤: {type(exc).__name__}"
+        if fund_values is None and yahoo_fund_id and apify_token:
+            try:
+                fund_values, provider = fetch_yahoo_fund_closes(yahoo_fund_id, apify_token)
+            except Exception as exc:
+                row["status"] = f"Yahoo基金錯誤: {type(exc).__name__}"
         if fund_values is not None:
             try:
                 benchmark_symbol = category["benchmark_symbol"]

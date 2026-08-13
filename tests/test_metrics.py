@@ -30,6 +30,12 @@ class MetricsTest(unittest.TestCase):
     def test_score_is_blank_when_metrics_are_incomplete(self):
         self.assertIsNone(MODULE.score({"return_1y": 0.1}))
 
+    def test_yahoo_symbol_candidates(self):
+        self.assertEqual(MODULE.yahoo_symbol_candidates("F0GBR04AMX:FO"),
+                         ["F0GBR04AMX:FO", "F0GBR04AMX"])
+        self.assertEqual(MODULE.yahoo_symbol_candidates("F0GBR04AMX"),
+                         ["F0GBR04AMX"])
+
 
 if __name__ == "__main__":
     unittest.main()

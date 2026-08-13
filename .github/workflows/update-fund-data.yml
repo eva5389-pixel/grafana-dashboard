@@ -2,6 +2,11 @@ name: Update fund dashboard data
 
 on:
   workflow_dispatch:
+    inputs:
+      yahoo_fund_id:
+        description: "Optional Yahoo Taiwan fund id to probe (for example F0GBR04AMX:FO)"
+        required: false
+        default: ""
   schedule:
     # 12:00 UTC = 20:00 Asia/Taipei.
     - cron: "0 12 * * *"
@@ -25,6 +30,12 @@ jobs:
         run: pip install -r requirements-optional.txt
       - name: Validate calculations
         run: python -m unittest discover -s tests -v
+      - name: Probe Yahoo fund history
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.yahoo_fund_id != '' }}
+        env:
+          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
+          YAHOO_FUND_ID: ${{ inputs.yahoo_fund_id }}
+        run: python src/probe_yahoo_fund.py
       - name: Update daily fund data
         env:
           TWELVE_DATA_API_KEY: ${{ secrets.TWELVE_DATA_API_KEY }}

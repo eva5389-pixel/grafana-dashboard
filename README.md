@@ -16,6 +16,7 @@
 - 基富通公開基金總覽用於核對基金名稱、分類及網站公布的績效；其頁面標示基金資料來自 Morningstar。
 - Twelve Data 優先用於設定檔中有明確代碼的市場價格與 Benchmark 歷史序列；失敗時以 Apify/Yahoo Finance 備援。
 - 設定 `morningstar_id` 的基金可透過 MIT 授權的 MStarpy 取得 Morningstar 公開淨值；此來源為選用功能，失敗時安全降級。
+- 設定 `yahoo_fund_id`（例如 `F0GBR04AMX:FO`）時，Apify會依序嘗試Yahoo台灣基金ID及其不含`:FO`的Morningstar ID。
 - Sharpe 與最大回撤以 Apache-2.0 授權的 QuantStats 交叉計算；套件不可用時使用本專案內建公式。
 - 網站未提供的歷史資料不推測、不補值；儀表板會顯示「待資料」。
 - 不使用基富通登入帳戶資料，也不以未公開介面繞過網站限制。
