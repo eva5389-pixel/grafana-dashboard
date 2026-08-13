@@ -1,0 +1,5 @@
+﻿rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,status
+1,記憶體,街口中小型基金,,,SOXX,193.07,,,50.58,2.110,,,3.436,買進,,,,,,,,,7,22.78,旺矽、穎崴、南亞科、華邦電、群聯、宜鼎、南茂,2026-06-30,已驗證記憶體供應鏈持股；Benchmark資料不足；https://landbank.moneydj.com/w/wr/wr04.djhtm?a=ACCH03-D504
+2,記憶體,國泰臺韓科技基金,,,SOXX,171.53,,,55.38,0.860,,,3.101,買進,,,,,,,,,6,36.01,SK海力士、三星電子、華邦電、南亞科、力成、旺宏,2026-06-30,已驗證記憶體供應鏈持股；Benchmark資料不足；https://www.yesfund.com.tw/w/wr/wr04_ACTR37.djhtm
+3,記憶體,街口台灣基金,,,SOXX,184.58,,,47.55,2.080,,,2.914,買進,,,,,,,,,2,7.65,南亞科、華邦電,2026-06-30,已驗證記憶體供應鏈持股；Benchmark資料不足；https://fund.hncb.com.tw/w/wr/wr04.djhtm?a=ACCH01-012001
+4,記憶體,富邦台灣科技指數基金(本基金之配息來源可能為收益平準金),,,SOXX,111.53,,,36.99,2.020,,,2.158,買進,,,,,,,,,5,1.86,華邦電、南亞科、旺宏、創見、力成,2026-06-30,已驗證記憶體供應鏈持股；Benchmark資料不足；https://djinfo.cathaysec.com.tw/w/wr/wr04_AC0052.djhtm

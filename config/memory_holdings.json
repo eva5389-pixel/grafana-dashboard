@@ -1,0 +1,34 @@
+[
+  {
+    "name": "國泰臺韓科技基金",
+    "coverage": 6,
+    "exposure": 0.3601,
+    "holdings": "SK海力士、三星電子、華邦電、南亞科、力成、旺宏",
+    "as_of": "2026-06-30",
+    "source": "https://www.yesfund.com.tw/w/wr/wr04_ACTR37.djhtm"
+  },
+  {
+    "name": "街口中小型基金",
+    "coverage": 7,
+    "exposure": 0.2278,
+    "holdings": "旺矽、穎崴、南亞科、華邦電、群聯、宜鼎、南茂",
+    "as_of": "2026-06-30",
+    "source": "https://landbank.moneydj.com/w/wr/wr04.djhtm?a=ACCH03-D504"
+  },
+  {
+    "name": "街口台灣基金",
+    "coverage": 2,
+    "exposure": 0.0765,
+    "holdings": "南亞科、華邦電",
+    "as_of": "2026-06-30",
+    "source": "https://fund.hncb.com.tw/w/wr/wr04.djhtm?a=ACCH01-012001"
+  },
+  {
+    "name": "富邦台灣科技指數基金(本基金之配息來源可能為收益平準金)",
+    "coverage": 5,
+    "exposure": 0.0186,
+    "holdings": "華邦電、南亞科、旺宏、創見、力成",
+    "as_of": "2026-06-30",
+    "source": "https://djinfo.cathaysec.com.tw/w/wr/wr04_AC0052.djhtm"
+  }
+]
