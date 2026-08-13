@@ -279,6 +279,8 @@ def main() -> int:
         for rank, row in enumerate(rows[:10], 1):
             formatted = {key: row.get(key, "") for key in fields}
             formatted["rank"] = rank
+            if category == "overall_top5" and rank == 1:
+                formatted["name"] = f"👑 ✨ {formatted['name']} ✨"
             for key in ("return_1y", "benchmark_return_1y", "excess_return_1y", "momentum_6m", "max_drawdown"):
                 formatted[key] = fmt(row.get(key), percent=True)
             formatted["quantum_exposure"] = fmt(row.get("quantum_exposure"), percent=True)

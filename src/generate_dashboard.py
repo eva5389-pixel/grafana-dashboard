@@ -17,6 +17,19 @@ def table_panel(category: dict, index: int) -> dict:
     if not optical:
         excluded.update({"optical_coverage": True, "optical_exposure": True,
                          "optical_holdings": True, "optical_as_of": True})
+    overrides = [
+        {"matcher": {"id": "byName", "options": "signal"}, "properties": [{"id": "custom.cellOptions", "value": {"type": "color-text"}}, {"id": "mappings", "value": [{"type": "value", "options": {"買進": {"color": "green", "text": "買進"}, "觀察": {"color": "yellow", "text": "觀察"}, "賣出": {"color": "red", "text": "賣出"}, "待資料": {"color": "gray", "text": "待資料"}}}]}]},
+        {"matcher": {"id": "byName", "options": "status"}, "properties": [{"id": "custom.width", "value": 150}]},
+        {"matcher": {"id": "byName", "options": "name"}, "properties": [{"id": "custom.width", "value": 260}]}
+    ]
+    if category["id"] == "overall_top5":
+        overrides.append({
+            "matcher": {"id": "byName", "options": "rank"},
+            "properties": [
+                {"id": "custom.cellOptions", "value": {"type": "color-background"}},
+                {"id": "mappings", "value": [{"type": "value", "options": {"1": {"color": "#FFD700", "text": "👑 1"}}}]}
+            ]
+        })
     return {
         "id": index + 2,
         "title": category["name"] if category["id"] == "overall_top5" else f"{category['name']}｜基金 Top 10",
@@ -34,11 +47,7 @@ def table_panel(category: dict, index: int) -> dict:
         }],
         "fieldConfig": {
             "defaults": {"custom": {"align": "auto", "cellOptions": {"type": "auto"}}},
-            "overrides": [
-                {"matcher": {"id": "byName", "options": "signal"}, "properties": [{"id": "custom.cellOptions", "value": {"type": "color-text"}}, {"id": "mappings", "value": [{"type": "value", "options": {"買進": {"color": "green", "text": "買進"}, "觀察": {"color": "yellow", "text": "觀察"}, "賣出": {"color": "red", "text": "賣出"}, "待資料": {"color": "gray", "text": "待資料"}}}]}]},
-                {"matcher": {"id": "byName", "options": "status"}, "properties": [{"id": "custom.width", "value": 150}]},
-                {"matcher": {"id": "byName", "options": "name"}, "properties": [{"id": "custom.width", "value": 260}]}
-            ]
+            "overrides": overrides
         },
         "options": {"showHeader": True, "cellHeight": "sm", "footer": {"show": False}}
     }
