@@ -27,6 +27,16 @@ BENCHMARK_KEYWORDS = {
 def supplemental_market(name: str, target: str) -> str | None:
     """Classify Taiwan-domiciled funds by their actual overseas mandate."""
     excluded = ("反向" in name or "正向2倍" in name or "正向兩倍" in name)
+    if "黃金" in name and not excluded:
+        return "gold"
+    energy_words = ("能源", "綠能", "潔淨能源", "石油", "油氣")
+    if (any(word in name for word in energy_words) and "債券" not in target
+            and any(word in target for word in ("股票", "指數", "組合", "期貨")) and not excluded):
+        return "energy"
+    mining_words = ("礦業", "礦產", "天然資源", "原物料")
+    if (any(word in name for word in mining_words)
+            and any(word in target for word in ("股票", "指數", "組合")) and not excluded):
+        return "mining"
     if "債券" in target and "股票債券" not in target and "多重資產" not in target and not excluded:
         return "bond"
     if "巴西" in name and any(word in target for word in ("股票", "指數")) and not excluded:
@@ -89,6 +99,11 @@ def main() -> int:
         keyword = BENCHMARK_KEYWORDS.get(row["category"])
         if row.get("target") == "市場指數" and keyword and keyword.lower() in row.get("name", "").lower():
             benchmarks[row["category"]] = number(row.get("return_1y"))
+        benchmark_name = row.get("name", "").lower()
+        if row.get("target") == "市場指數" and "gld.us" in benchmark_name:
+            benchmarks["gold"] = number(row.get("return_1y"))
+        if row.get("target") == "市場指數" and "xle.us" in benchmark_name:
+            benchmarks["energy"] = number(row.get("return_1y"))
     grouped = defaultdict(list)
     for item in raw:
         category = item["category"]

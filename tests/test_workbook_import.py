@@ -40,6 +40,26 @@ class WorkbookImportTest(unittest.TestCase):
     def test_brazil_fund_is_classified(self):
         self.assertEqual(supplemental_market("野村巴西基金", "跨國投資股票型單一國家"), "brazil")
 
+    def test_energy_fund_is_classified(self):
+        self.assertEqual(
+            supplemental_market("富蘭克林華美全球潔淨能源ETF基金", "跨國投資指數型"),
+            "energy",
+        )
+
+    def test_gold_fund_is_classified(self):
+        self.assertEqual(supplemental_market("元大黃金期貨基金", "期貨型"), "gold")
+        self.assertIsNone(supplemental_market("元大黃金單日正向2倍基金", "期貨型"))
+
+    def test_mining_fund_is_classified_without_energy_overlap(self):
+        self.assertEqual(
+            supplemental_market("富蘭克林華美天然資源組合基金", "全球組合型其他"),
+            "mining",
+        )
+        self.assertEqual(
+            supplemental_market("德銀遠東DWS全球原物料能源基金", "跨國投資股票型全球市場"),
+            "energy",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

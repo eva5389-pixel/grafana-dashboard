@@ -2416,11 +2416,602 @@
     },
     {
       "id": 14,
-      "title": "半導體｜基金 Top 10",
+      "title": "能源｜基金 Top 10",
       "type": "table",
       "gridPos": {
         "x": 0,
         "y": 59,
+        "w": 12,
+        "h": 9
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "csv",
+          "source": "inline",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status\n1,能源,統一新亞洲科技能源基金,,,XLE,152.62,-25.74,178.36,53.84,0.790,,,4.006,買進,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n2,能源,中國信託臺灣綠能及電動車ETF基金(本基金非屬環境、社會及治理相關主題基金),,,XLE,81.56,-25.74,107.30,39.60,0.900,,,2.465,買進,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）\n3,能源,富蘭克林華美全球潔淨能源ETF基金(本基金非屬環境、社會及治理相關主題基金),,,XLE,59.06,-25.74,84.80,2.90,0.590,,,1.586,買進,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）\n4,能源,安聯全球綠能趨勢基金-A累積型(台幣),,,XLE,38.13,-25.74,63.87,8.39,0.790,,,1.262,買進,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n5,能源,德銀遠東DWS全球原物料能源基金,,,XLE,40.96,-25.74,66.70,1.54,0.580,,,1.208,買進,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n",
+          "format": "table",
+          "parser": "backend"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "rank": 0,
+              "name": 1,
+              "quantum_coverage": 2,
+              "optical_coverage": 2,
+              "memory_coverage": 2,
+              "robotics_coverage": 2,
+              "quantum_exposure": 3,
+              "optical_exposure": 3,
+              "memory_exposure": 3,
+              "robotics_exposure": 3,
+              "quantum_holdings": 4,
+              "optical_holdings": 4,
+              "memory_holdings": 4,
+              "robotics_holdings": 4,
+              "holdings_as_of": 5,
+              "optical_as_of": 5,
+              "memory_as_of": 5,
+              "robotics_as_of": 5,
+              "return_1y": 6,
+              "benchmark": 7,
+              "excess_return_1y": 8,
+              "momentum_6m": 9,
+              "sharpe": 10,
+              "max_drawdown": 11,
+              "recovery_days": 12,
+              "score": 13,
+              "signal": 14,
+              "status": 15
+            },
+            "excludeByName": {
+              "category_name": true,
+              "moneydj_id": true,
+              "twelve_data_symbol": true,
+              "benchmark_return_1y": true,
+              "quantum_coverage": true,
+              "quantum_exposure": true,
+              "quantum_holdings": true,
+              "holdings_as_of": true,
+              "optical_coverage": true,
+              "optical_exposure": true,
+              "optical_holdings": true,
+              "optical_as_of": true,
+              "memory_coverage": true,
+              "memory_exposure": true,
+              "memory_holdings": true,
+              "memory_as_of": true,
+              "robotics_coverage": true,
+              "robotics_exposure": true,
+              "robotics_holdings": true,
+              "robotics_as_of": true
+            },
+            "renameByName": {
+              "rank": "排名",
+              "name": "基金",
+              "quantum_coverage": "供應鏈家數",
+              "optical_coverage": "供應鏈家數",
+              "memory_coverage": "供應鏈家數",
+              "robotics_coverage": "供應鏈家數",
+              "quantum_exposure": "相關持股%",
+              "optical_exposure": "相關持股%",
+              "memory_exposure": "相關持股%",
+              "robotics_exposure": "相關持股%",
+              "quantum_holdings": "實際持股",
+              "optical_holdings": "實際持股",
+              "memory_holdings": "實際持股",
+              "robotics_holdings": "實際持股",
+              "holdings_as_of": "持股日期",
+              "optical_as_of": "持股日期",
+              "memory_as_of": "持股日期",
+              "robotics_as_of": "持股日期",
+              "return_1y": "一年報酬%",
+              "benchmark": "Benchmark",
+              "excess_return_1y": "超額報酬%",
+              "momentum_6m": "六個月動能%",
+              "sharpe": "夏普",
+              "max_drawdown": "最大回撤%",
+              "recovery_days": "恢復天數",
+              "score": "綜合評分",
+              "signal": "訊號",
+              "status": "資料狀態"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "signal"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "買進": {
+                        "color": "green",
+                        "text": "買進"
+                      },
+                      "觀察": {
+                        "color": "yellow",
+                        "text": "觀察"
+                      },
+                      "賣出": {
+                        "color": "red",
+                        "text": "賣出"
+                      },
+                      "待資料": {
+                        "color": "gray",
+                        "text": "待資料"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 260
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
+      "id": 15,
+      "title": "黃金｜基金 Top 10",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 59,
+        "w": 12,
+        "h": 9
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "csv",
+          "source": "inline",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status\n1,黃金,元大黃金期貨基金,,,GLD,39.46,29.95,9.51,-14.47,0.350,,,0.415,觀察,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）\n2,黃金,元大標普高盛黃金ER指數期貨基金,,,GLD,24.59,29.95,-5.36,-15.52,0.280,,,0.093,賣出,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）\n",
+          "format": "table",
+          "parser": "backend"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "rank": 0,
+              "name": 1,
+              "quantum_coverage": 2,
+              "optical_coverage": 2,
+              "memory_coverage": 2,
+              "robotics_coverage": 2,
+              "quantum_exposure": 3,
+              "optical_exposure": 3,
+              "memory_exposure": 3,
+              "robotics_exposure": 3,
+              "quantum_holdings": 4,
+              "optical_holdings": 4,
+              "memory_holdings": 4,
+              "robotics_holdings": 4,
+              "holdings_as_of": 5,
+              "optical_as_of": 5,
+              "memory_as_of": 5,
+              "robotics_as_of": 5,
+              "return_1y": 6,
+              "benchmark": 7,
+              "excess_return_1y": 8,
+              "momentum_6m": 9,
+              "sharpe": 10,
+              "max_drawdown": 11,
+              "recovery_days": 12,
+              "score": 13,
+              "signal": 14,
+              "status": 15
+            },
+            "excludeByName": {
+              "category_name": true,
+              "moneydj_id": true,
+              "twelve_data_symbol": true,
+              "benchmark_return_1y": true,
+              "quantum_coverage": true,
+              "quantum_exposure": true,
+              "quantum_holdings": true,
+              "holdings_as_of": true,
+              "optical_coverage": true,
+              "optical_exposure": true,
+              "optical_holdings": true,
+              "optical_as_of": true,
+              "memory_coverage": true,
+              "memory_exposure": true,
+              "memory_holdings": true,
+              "memory_as_of": true,
+              "robotics_coverage": true,
+              "robotics_exposure": true,
+              "robotics_holdings": true,
+              "robotics_as_of": true
+            },
+            "renameByName": {
+              "rank": "排名",
+              "name": "基金",
+              "quantum_coverage": "供應鏈家數",
+              "optical_coverage": "供應鏈家數",
+              "memory_coverage": "供應鏈家數",
+              "robotics_coverage": "供應鏈家數",
+              "quantum_exposure": "相關持股%",
+              "optical_exposure": "相關持股%",
+              "memory_exposure": "相關持股%",
+              "robotics_exposure": "相關持股%",
+              "quantum_holdings": "實際持股",
+              "optical_holdings": "實際持股",
+              "memory_holdings": "實際持股",
+              "robotics_holdings": "實際持股",
+              "holdings_as_of": "持股日期",
+              "optical_as_of": "持股日期",
+              "memory_as_of": "持股日期",
+              "robotics_as_of": "持股日期",
+              "return_1y": "一年報酬%",
+              "benchmark": "Benchmark",
+              "excess_return_1y": "超額報酬%",
+              "momentum_6m": "六個月動能%",
+              "sharpe": "夏普",
+              "max_drawdown": "最大回撤%",
+              "recovery_days": "恢復天數",
+              "score": "綜合評分",
+              "signal": "訊號",
+              "status": "資料狀態"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "signal"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "買進": {
+                        "color": "green",
+                        "text": "買進"
+                      },
+                      "觀察": {
+                        "color": "yellow",
+                        "text": "觀察"
+                      },
+                      "賣出": {
+                        "color": "red",
+                        "text": "賣出"
+                      },
+                      "待資料": {
+                        "color": "gray",
+                        "text": "待資料"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 260
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
+      "id": 16,
+      "title": "礦業｜基金 Top 10",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 68,
+        "w": 12,
+        "h": 9
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "csv",
+          "source": "inline",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status\n1,礦業,富蘭克林華美天然資源組合基金,,,PICK,49.17,,,-2.19,0.540,,,,待資料,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n2,礦業,復華全球原物料基金,,,PICK,39.06,,,-3.77,0.400,,,,待資料,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n",
+          "format": "table",
+          "parser": "backend"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "rank": 0,
+              "name": 1,
+              "quantum_coverage": 2,
+              "optical_coverage": 2,
+              "memory_coverage": 2,
+              "robotics_coverage": 2,
+              "quantum_exposure": 3,
+              "optical_exposure": 3,
+              "memory_exposure": 3,
+              "robotics_exposure": 3,
+              "quantum_holdings": 4,
+              "optical_holdings": 4,
+              "memory_holdings": 4,
+              "robotics_holdings": 4,
+              "holdings_as_of": 5,
+              "optical_as_of": 5,
+              "memory_as_of": 5,
+              "robotics_as_of": 5,
+              "return_1y": 6,
+              "benchmark": 7,
+              "excess_return_1y": 8,
+              "momentum_6m": 9,
+              "sharpe": 10,
+              "max_drawdown": 11,
+              "recovery_days": 12,
+              "score": 13,
+              "signal": 14,
+              "status": 15
+            },
+            "excludeByName": {
+              "category_name": true,
+              "moneydj_id": true,
+              "twelve_data_symbol": true,
+              "benchmark_return_1y": true,
+              "quantum_coverage": true,
+              "quantum_exposure": true,
+              "quantum_holdings": true,
+              "holdings_as_of": true,
+              "optical_coverage": true,
+              "optical_exposure": true,
+              "optical_holdings": true,
+              "optical_as_of": true,
+              "memory_coverage": true,
+              "memory_exposure": true,
+              "memory_holdings": true,
+              "memory_as_of": true,
+              "robotics_coverage": true,
+              "robotics_exposure": true,
+              "robotics_holdings": true,
+              "robotics_as_of": true
+            },
+            "renameByName": {
+              "rank": "排名",
+              "name": "基金",
+              "quantum_coverage": "供應鏈家數",
+              "optical_coverage": "供應鏈家數",
+              "memory_coverage": "供應鏈家數",
+              "robotics_coverage": "供應鏈家數",
+              "quantum_exposure": "相關持股%",
+              "optical_exposure": "相關持股%",
+              "memory_exposure": "相關持股%",
+              "robotics_exposure": "相關持股%",
+              "quantum_holdings": "實際持股",
+              "optical_holdings": "實際持股",
+              "memory_holdings": "實際持股",
+              "robotics_holdings": "實際持股",
+              "holdings_as_of": "持股日期",
+              "optical_as_of": "持股日期",
+              "memory_as_of": "持股日期",
+              "robotics_as_of": "持股日期",
+              "return_1y": "一年報酬%",
+              "benchmark": "Benchmark",
+              "excess_return_1y": "超額報酬%",
+              "momentum_6m": "六個月動能%",
+              "sharpe": "夏普",
+              "max_drawdown": "最大回撤%",
+              "recovery_days": "恢復天數",
+              "score": "綜合評分",
+              "signal": "訊號",
+              "status": "資料狀態"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "signal"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "買進": {
+                        "color": "green",
+                        "text": "買進"
+                      },
+                      "觀察": {
+                        "color": "yellow",
+                        "text": "觀察"
+                      },
+                      "賣出": {
+                        "color": "red",
+                        "text": "賣出"
+                      },
+                      "待資料": {
+                        "color": "gray",
+                        "text": "待資料"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 260
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
+      "id": 17,
+      "title": "半導體｜基金 Top 10",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 68,
         "w": 12,
         "h": 9
       },
@@ -2612,12 +3203,12 @@
       }
     },
     {
-      "id": 15,
+      "id": 18,
       "title": "記憶體｜基金 Top 10",
       "type": "table",
       "gridPos": {
-        "x": 12,
-        "y": 59,
+        "x": 0,
+        "y": 77,
         "w": 12,
         "h": 9
       },
@@ -2805,12 +3396,12 @@
       }
     },
     {
-      "id": 16,
+      "id": 19,
       "title": "機器人｜基金 Top 10",
       "type": "table",
       "gridPos": {
-        "x": 0,
-        "y": 68,
+        "x": 12,
+        "y": 77,
         "w": 12,
         "h": 9
       },
@@ -2998,12 +3589,12 @@
       }
     },
     {
-      "id": 17,
+      "id": 20,
       "title": "光通訊｜基金 Top 10",
       "type": "table",
       "gridPos": {
-        "x": 12,
-        "y": 68,
+        "x": 0,
+        "y": 86,
         "w": 12,
         "h": 9
       },
@@ -3191,12 +3782,12 @@
       }
     },
     {
-      "id": 18,
+      "id": 21,
       "title": "量子電腦｜基金 Top 10",
       "type": "table",
       "gridPos": {
-        "x": 0,
-        "y": 77,
+        "x": 12,
+        "y": 86,
         "w": 12,
         "h": 9
       },
@@ -3384,12 +3975,12 @@
       }
     },
     {
-      "id": 19,
+      "id": 22,
       "title": "金融｜基金 Top 10",
       "type": "table",
       "gridPos": {
-        "x": 12,
-        "y": 77,
+        "x": 0,
+        "y": 95,
         "w": 12,
         "h": 9
       },
@@ -3581,12 +4172,12 @@
       }
     },
     {
-      "id": 20,
+      "id": 23,
       "title": "醫療｜基金 Top 10",
       "type": "table",
       "gridPos": {
-        "x": 0,
-        "y": 86,
+        "x": 12,
+        "y": 95,
         "w": 12,
         "h": 9
       },
