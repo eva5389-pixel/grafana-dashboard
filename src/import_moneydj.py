@@ -40,7 +40,7 @@ def find_columns(headers: list[object]) -> tuple[int, int]:
 
 
 def read_rows(path: Path) -> list[list[object]]:
-    if path.suffix.lower() == ".csv":
+    if path.suffix.lower() == ".csv" or not path.suffix:
         for encoding in ("utf-8-sig", "cp950", "big5"):
             try:
                 with path.open(encoding=encoding, newline="") as handle:

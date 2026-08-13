@@ -26,6 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config" / "funds.json"
 DATA = ROOT / "data"
 CATEGORY_DATA = DATA / "categories"
+NAV_DATA = DATA / "nav"
 
 
 def pct_change(values: list[float], periods: int) -> float | None:
@@ -103,6 +104,19 @@ def fetch_closes(symbol: str, api_key: str) -> list[float]:
     payload = api_json("time_series", api_key, symbol=symbol, interval="1day", outputsize=800)
     rows = payload.get("values", [])
     return [float(row["close"]) for row in reversed(rows) if row.get("close")]
+
+
+def fetch_local_nav(filename: str) -> list[float]:
+    """Read a normalized user-downloaded NAV series from data/nav."""
+    path = NAV_DATA / filename
+    values = []
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        for row in csv.DictReader(handle):
+            if row.get("nav") not in (None, ""):
+                values.append(float(row["nav"]))
+    if len(values) < 2:
+        raise RuntimeError(f"No usable local NAV history: {filename}")
+    return values
 
 
 def fetch_apify_closes(symbol: str, token: str) -> list[float]:
@@ -263,9 +277,16 @@ def main() -> int:
         symbol = fund.get("twelve_data_symbol", "").strip()
         yahoo_fund_id = fund.get("yahoo_fund_id", "").strip()
         morningstar_id = fund.get("morningstar_id", "").strip()
+        local_nav_file = fund.get("local_nav_file", "").strip()
         row = {**fund, "category_name": category["name"], "benchmark": category["benchmark_symbol"]}
         fund_values = None
         provider = None
+        if local_nav_file:
+            try:
+                fund_values = fetch_local_nav(local_nav_file)
+                provider = "Yahoo台灣下載"
+            except Exception as exc:
+                row["status"] = f"本機淨值錯誤: {type(exc).__name__}"
         if morningstar_id and enable_mstarpy:
             try:
                 fund_values, mstarpy_session = fetch_mstarpy_nav(morningstar_id, mstarpy_session)
@@ -284,24 +305,28 @@ def main() -> int:
                 row["status"] = f"Yahoo基金錯誤: {type(exc).__name__}"
         if fund_values is not None:
             try:
-                benchmark_symbol = category["benchmark_symbol"]
-                if benchmark_symbol not in benchmark_cache:
-                    benchmark_cache[benchmark_symbol], _ = fetch_market_closes(benchmark_symbol, api_key, apify_token)
-                benchmark_values = benchmark_cache[benchmark_symbol]
-                length = min(len(fund_values), len(benchmark_values))
-                fund_values, benchmark_values = fund_values[-length:], benchmark_values[-length:]
+                fund_length = len(fund_values)
                 risk_metrics = quantstats_metrics(fund_values[-252:], config["risk_free_rate"])
                 row.update({
-                    "return_1y": pct_change(fund_values, min(252, length - 1)),
-                    "benchmark_return_1y": pct_change(benchmark_values, min(252, length - 1)),
-                    "momentum_6m": pct_change(fund_values, min(126, length - 1)),
+                    "return_1y": pct_change(fund_values, min(252, fund_length - 1)),
+                    "momentum_6m": pct_change(fund_values, min(126, fund_length - 1)),
                     "sharpe": risk_metrics.get("sharpe", sharpe(fund_values[-252:], config["risk_free_rate"])),
                     "max_drawdown": risk_metrics.get("max_drawdown", max_drawdown(fund_values)),
                     "recovery_days": recovery_days(fund_values),
                     "status": f"已更新（{provider}）",
                 })
-                if row["return_1y"] is not None and row["benchmark_return_1y"] is not None:
-                    row["excess_return_1y"] = row["return_1y"] - row["benchmark_return_1y"]
+                benchmark_symbol = category["benchmark_symbol"]
+                try:
+                    if benchmark_symbol not in benchmark_cache:
+                        benchmark_cache[benchmark_symbol], _ = fetch_market_closes(benchmark_symbol, api_key, apify_token)
+                    benchmark_values = benchmark_cache[benchmark_symbol]
+                    length = min(len(fund_values), len(benchmark_values))
+                    benchmark_values = benchmark_values[-length:]
+                    row["benchmark_return_1y"] = pct_change(benchmark_values, min(252, length - 1))
+                    if row["return_1y"] is not None and row["benchmark_return_1y"] is not None:
+                        row["excess_return_1y"] = row["return_1y"] - row["benchmark_return_1y"]
+                except Exception:
+                    row["status"] = f"已更新（{provider}；Benchmark資料不足）"
             except Exception as exc:  # keep one bad instrument from blocking every category
                 row["status"] = f"指標錯誤: {type(exc).__name__}"
         else:

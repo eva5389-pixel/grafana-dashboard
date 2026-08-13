@@ -1,2 +1,5 @@
-﻿rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status
-1,量子電腦,基金清單建置中,,,QTUM,,,,,,,,,待資料,待建立基金清單
+﻿rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status
+1,量子電腦,安聯台灣科技基金,,,QTUM,200.68,,,63.33,2.030,,,3.328,買進,3,13.21,台積電、日月光、台燿,2026-06-30,,,,,,,,,,,,,已驗證量子供應鏈持股；Benchmark資料不足；https://mmafund.sinopac.com/w/wr/wr902.djhtm?A=ACDD04-TT3
+2,量子電腦,國泰臺韓科技基金,,,QTUM,171.53,,,55.38,0.860,,,3.010,買進,6,26.84,台積電、日月光、鴻海、廣達、緯創、中華電信,2026-06-30,,,,,,,,,,,,,已驗證量子供應鏈持股；Benchmark資料不足；https://www.yesfund.com.tw/w/wr/wr04_ACTR37.djhtm
+3,量子電腦,富邦台灣科技指數基金(本基金之配息來源可能為收益平準金),,,QTUM,111.53,,,36.99,2.020,,,2.846,買進,5,70.72,台積電、鴻海、日月光、廣達、緯創,2026-06-30,,,,,,,,,,,,,已驗證量子供應鏈持股；Benchmark資料不足；https://djinfo.cathaysec.com.tw/w/wr/wr04_AC0052.djhtm
+4,量子電腦,元大台灣電子科技基金,,,QTUM,111.74,,,39.64,2.010,,,2.688,買進,4,57.21,台積電、鴻海、日月光、廣達,2026-07-20,,,,,,,,,,,,,已驗證量子供應鏈持股；Benchmark資料不足；https://www.cathaybk.com.tw/cathaybk/personal/investment/etf/details/?etfid=12050005

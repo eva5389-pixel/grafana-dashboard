@@ -1,0 +1,26 @@
+[
+  {
+    "name": "國泰納斯達克全球人工智慧及機器人基金",
+    "coverage": 6,
+    "exposure": 0.0596,
+    "holdings": "優必選、Symbotic、直覺外科、NVIDIA、台達電、Tesla",
+    "as_of": "2026-06-30",
+    "source": "https://www.yesfund.com.tw/w/wr/wr04_ACTR36.djhtm"
+  },
+  {
+    "name": "台新SG全球AI機器人精選ETF基金",
+    "coverage": 2,
+    "exposure": 0.0516,
+    "holdings": "NVIDIA、直覺外科",
+    "as_of": "2026-06-30",
+    "source": "https://m.moneydj.com/a4.aspx?a=ACTT63"
+  },
+  {
+    "name": "第一金全球AI機器人及自動化產業基金N類型(美元)",
+    "coverage": 3,
+    "exposure": 0.1044,
+    "holdings": "Tesla、直覺外科、NVIDIA",
+    "as_of": "2025-01-31",
+    "source": "https://m.moneydj.com/a4.aspx?a=ACNC89"
+  }
+]

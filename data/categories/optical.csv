@@ -1,2 +1,5 @@
-﻿rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status
-1,光通訊,基金清單建置中,,,IYZ,,,,,,,,,待資料,待建立基金清單
+﻿rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status
+1,光通訊,街口中小型基金,,,IYZ,193.07,,,50.58,2.110,,,3.228,買進,,,,,4,16.94,旺矽、穎崴、台積電、智邦,2026-06-30,,,,,,,,,已驗證光通訊供應鏈持股；Benchmark資料不足；https://landbank.moneydj.com/w/wr/wr04.djhtm?a=ACCH03-D504
+2,光通訊,元大二○○一基金,,,IYZ,163.58,,,49.89,0.850,,,2.583,買進,,,,,3,12.83,聯亞、智邦、光聖,2026-03-31,,,,,,,,,已驗證光通訊供應鏈持股；Benchmark資料不足；https://bopfund.moneydj.com/w/wr/wr04_AC0017-0619.djhtm
+3,光通訊,第一金電子基金,,,IYZ,143.49,,,52.49,0.880,,,2.547,買進,,,,,4,21.14,台積電、旺矽、智邦、致茂,2026-05-31,,,,,,,,,已驗證光通訊供應鏈持股；Benchmark資料不足；https://www.fsitc.com.tw/Files/EDM/%E7%B6%93%E7%90%86%E4%BA%BA%E5%A0%B1%E5%91%8A_%E7%AC%AC%E4%B8%80%E9%87%91%E9%9B%BB%E5%AD%90%E6%9A%A8%E6%A0%B8%E5%BF%83%E6%88%B0%E7%95%A5%E6%9A%A8%E4%B8%BB%E5%8B%95%E5%BC%8FETF_20260630_20260701103417065246.pdf
+4,光通訊,富邦台灣心基金,,,IYZ,99.15,,,45.75,0.750,,,1.904,觀察,,,,,3,15.46,聯亞、華星光、波若威,2026-03-31,,,,,,,,,已驗證光通訊供應鏈持股；Benchmark資料不足；https://feibbank.moneydj.com/w/wr/wr04.djhtm?a=ACCT01-CC04
