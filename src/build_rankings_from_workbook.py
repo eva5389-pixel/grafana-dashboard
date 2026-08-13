@@ -23,6 +23,16 @@ BENCHMARK_KEYWORDS = {
 }
 
 
+def supplemental_market(name: str, target: str) -> str | None:
+    """Classify Taiwan-domiciled funds by their actual overseas mandate."""
+    if "印度" in name and "股票" in target and "反向" not in name and "正向2倍" not in name and "正向兩倍" not in name:
+        return "india"
+    asean_words = ("東協", "東南亞", "越南", "泰國基金", "馬來西亞", "印尼", "菲律賓")
+    if any(word in name for word in asean_words) and "股票" in target and "反向" not in name and "正向2倍" not in name and "正向兩倍" not in name:
+        return "asean"
+    return None
+
+
 def eligible(item: dict[str, str]) -> bool:
     """Reject rows that the source workbook mapped to the wrong market bucket."""
     category, region = item.get("category", ""), item.get("region", "")
@@ -73,7 +83,9 @@ def main() -> int:
     grouped = defaultdict(list)
     for item in raw:
         category = item["category"]
-        if category not in categories or item.get("target") == "市場指數" or not eligible(item):
+        supplemental = supplemental_market(item.get("name", ""), item.get("target", ""))
+        if (category not in categories or item.get("target") == "市場指數"
+                or (not eligible(item) and not supplemental)):
             continue
         return_1y = number(item.get("return_1y"))
         momentum = number(item.get("momentum_6m"))
@@ -96,7 +108,26 @@ def main() -> int:
             row["score"] = (row["return_1y"] + row["excess_return_1y"]
                             + row["momentum_6m"] + row["sharpe"] / 5)
         row["signal"] = signal(row)
-        grouped[category].append(row)
+        if eligible(item):
+            grouped[category].append(row)
+        if supplemental:
+            clone = dict(row)
+            clone.update({
+                "category": supplemental,
+                "category_name": categories[supplemental]["name"],
+                "benchmark": categories[supplemental]["benchmark_symbol"],
+                "benchmark_return_1y": benchmarks.get(supplemental),
+            })
+            clone["excess_return_1y"] = (
+                clone["return_1y"] - clone["benchmark_return_1y"]
+                if clone["return_1y"] is not None and clone["benchmark_return_1y"] is not None else None
+            )
+            clone["score"] = None
+            if all(clone.get(key) is not None for key in ("return_1y", "excess_return_1y", "momentum_6m", "sharpe")):
+                clone["score"] = (clone["return_1y"] + clone["excess_return_1y"]
+                                  + clone["momentum_6m"] + clone["sharpe"] / 5)
+            clone["signal"] = signal(clone)
+            grouped[supplemental].append(clone)
     quantum_path = Path(__file__).resolve().parents[1] / "config" / "quantum_holdings.json"
     for holding in json.loads(quantum_path.read_text(encoding="utf-8")):
         item = next((candidate for candidate in raw if candidate["name"] == holding["name"]), None)

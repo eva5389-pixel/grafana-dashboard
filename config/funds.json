@@ -13,6 +13,8 @@
     {"id": "hong_kong", "name": "香港", "benchmark_symbol": "EWH"},
     {"id": "china", "name": "中國", "benchmark_symbol": "MCHI"},
     {"id": "usa", "name": "美國", "benchmark_symbol": "SPY"},
+    {"id": "india", "name": "印度", "benchmark_symbol": "INDA"},
+    {"id": "asean", "name": "東協", "benchmark_symbol": "ASEA"},
     {"id": "semiconductor", "name": "半導體", "benchmark_symbol": "SOXX"},
     {"id": "optical", "name": "光通訊", "benchmark_symbol": "IYZ"},
     {"id": "quantum", "name": "量子電腦", "benchmark_symbol": "QTUM"},

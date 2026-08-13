@@ -1062,11 +1062,357 @@
     },
     {
       "id": 8,
-      "title": "半導體｜基金 Top 10",
+      "title": "印度｜基金 Top 10",
       "type": "table",
       "gridPos": {
         "x": 0,
         "y": 32,
+        "w": 12,
+        "h": 9
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "csv",
+          "source": "inline",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,status\n1,印度,台新印度基金,,,INDA,25.84,,,16.67,0.460,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n2,印度,瀚亞印度基金S配息(台幣)(本基金配息來源可能為本金),,,INDA,18.57,,,11.59,0.390,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n3,印度,群益大印度基金N類型(台幣),,,INDA,11.88,,,2.76,0.320,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n4,印度,群益印度中小基金N類型(台幣),,,INDA,7.29,,,0.44,0.180,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n5,印度,野村印度潛力基金,,,INDA,3.36,,,-2.62,0.070,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n6,印度,元大印度基金,,,INDA,0.00,,,-7.91,-0.010,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n7,印度,瀚亞印度策略收益平衡基金S配息(台幣)(本基金有相當比重投資於非投資等級之高風險債券且配息來源可能為本金),,,INDA,-2.11,,,-3.34,-0.120,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n",
+          "format": "table",
+          "parser": "backend"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "rank": 0,
+              "name": 1,
+              "quantum_coverage": 2,
+              "optical_coverage": 2,
+              "quantum_exposure": 3,
+              "optical_exposure": 3,
+              "quantum_holdings": 4,
+              "optical_holdings": 4,
+              "holdings_as_of": 5,
+              "optical_as_of": 5,
+              "return_1y": 6,
+              "benchmark": 7,
+              "excess_return_1y": 8,
+              "momentum_6m": 9,
+              "sharpe": 10,
+              "max_drawdown": 11,
+              "recovery_days": 12,
+              "score": 13,
+              "signal": 14,
+              "status": 15
+            },
+            "excludeByName": {
+              "category_name": true,
+              "moneydj_id": true,
+              "twelve_data_symbol": true,
+              "benchmark_return_1y": true,
+              "quantum_coverage": true,
+              "quantum_exposure": true,
+              "quantum_holdings": true,
+              "holdings_as_of": true,
+              "optical_coverage": true,
+              "optical_exposure": true,
+              "optical_holdings": true,
+              "optical_as_of": true
+            },
+            "renameByName": {
+              "rank": "排名",
+              "name": "基金",
+              "quantum_coverage": "供應鏈家數",
+              "optical_coverage": "供應鏈家數",
+              "quantum_exposure": "相關持股%",
+              "optical_exposure": "相關持股%",
+              "quantum_holdings": "實際持股",
+              "optical_holdings": "實際持股",
+              "holdings_as_of": "持股日期",
+              "optical_as_of": "持股日期",
+              "return_1y": "一年報酬%",
+              "benchmark": "Benchmark",
+              "excess_return_1y": "超額報酬%",
+              "momentum_6m": "六個月動能%",
+              "sharpe": "夏普",
+              "max_drawdown": "最大回撤%",
+              "recovery_days": "恢復天數",
+              "score": "綜合評分",
+              "signal": "訊號",
+              "status": "資料狀態"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "signal"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "買進": {
+                        "color": "green",
+                        "text": "買進"
+                      },
+                      "觀察": {
+                        "color": "yellow",
+                        "text": "觀察"
+                      },
+                      "賣出": {
+                        "color": "red",
+                        "text": "賣出"
+                      },
+                      "待資料": {
+                        "color": "gray",
+                        "text": "待資料"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 260
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
+      "id": 9,
+      "title": "東協｜基金 Top 10",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 32,
+        "w": 12,
+        "h": 9
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "csv",
+          "source": "inline",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,status\n1,東協,統一大東協高股息基金(台幣)(本基金並無保證收益及配息),,,ASEA,66.39,,,18.18,0.870,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n2,東協,野村泰國基金,,,ASEA,40.31,,,10.63,0.740,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n3,東協,復華東協世紀基金,,,ASEA,38.34,,,16.94,0.920,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-07；回撤/恢復期資料不足）\n4,東協,安聯中國東協基金,,,ASEA,28.04,,,7.57,0.740,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n5,東協,元大新東協平衡基金(台幣)(本基金有相當比重投資於非投資等級之高風險債券),,,ASEA,27.00,,,8.86,0.810,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-07；回撤/恢復期資料不足）\n6,東協,群益東協成長基金(台幣),,,ASEA,26.07,,,6.82,0.670,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n7,東協,富邦越南機會基金(台幣),,,ASEA,2.67,,,-3.42,0.050,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n8,東協,中國信託越南機會基金-N類型(台幣),,,ASEA,-6.89,,,-3.57,-0.080,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）\n",
+          "format": "table",
+          "parser": "backend"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "rank": 0,
+              "name": 1,
+              "quantum_coverage": 2,
+              "optical_coverage": 2,
+              "quantum_exposure": 3,
+              "optical_exposure": 3,
+              "quantum_holdings": 4,
+              "optical_holdings": 4,
+              "holdings_as_of": 5,
+              "optical_as_of": 5,
+              "return_1y": 6,
+              "benchmark": 7,
+              "excess_return_1y": 8,
+              "momentum_6m": 9,
+              "sharpe": 10,
+              "max_drawdown": 11,
+              "recovery_days": 12,
+              "score": 13,
+              "signal": 14,
+              "status": 15
+            },
+            "excludeByName": {
+              "category_name": true,
+              "moneydj_id": true,
+              "twelve_data_symbol": true,
+              "benchmark_return_1y": true,
+              "quantum_coverage": true,
+              "quantum_exposure": true,
+              "quantum_holdings": true,
+              "holdings_as_of": true,
+              "optical_coverage": true,
+              "optical_exposure": true,
+              "optical_holdings": true,
+              "optical_as_of": true
+            },
+            "renameByName": {
+              "rank": "排名",
+              "name": "基金",
+              "quantum_coverage": "供應鏈家數",
+              "optical_coverage": "供應鏈家數",
+              "quantum_exposure": "相關持股%",
+              "optical_exposure": "相關持股%",
+              "quantum_holdings": "實際持股",
+              "optical_holdings": "實際持股",
+              "holdings_as_of": "持股日期",
+              "optical_as_of": "持股日期",
+              "return_1y": "一年報酬%",
+              "benchmark": "Benchmark",
+              "excess_return_1y": "超額報酬%",
+              "momentum_6m": "六個月動能%",
+              "sharpe": "夏普",
+              "max_drawdown": "最大回撤%",
+              "recovery_days": "恢復天數",
+              "score": "綜合評分",
+              "signal": "訊號",
+              "status": "資料狀態"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "signal"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "買進": {
+                        "color": "green",
+                        "text": "買進"
+                      },
+                      "觀察": {
+                        "color": "yellow",
+                        "text": "觀察"
+                      },
+                      "賣出": {
+                        "color": "red",
+                        "text": "賣出"
+                      },
+                      "待資料": {
+                        "color": "gray",
+                        "text": "待資料"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 260
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
+      "id": 10,
+      "title": "半導體｜基金 Top 10",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 41,
         "w": 12,
         "h": 9
       },
@@ -1234,12 +1580,12 @@
       }
     },
     {
-      "id": 9,
+      "id": 11,
       "title": "光通訊｜基金 Top 10",
       "type": "table",
       "gridPos": {
         "x": 12,
-        "y": 32,
+        "y": 41,
         "w": 12,
         "h": 9
       },
@@ -1403,12 +1749,12 @@
       }
     },
     {
-      "id": 10,
+      "id": 12,
       "title": "量子電腦｜基金 Top 10",
       "type": "table",
       "gridPos": {
         "x": 0,
-        "y": 41,
+        "y": 50,
         "w": 12,
         "h": 9
       },
@@ -1572,12 +1918,12 @@
       }
     },
     {
-      "id": 11,
+      "id": 13,
       "title": "金融｜基金 Top 10",
       "type": "table",
       "gridPos": {
         "x": 12,
-        "y": 41,
+        "y": 50,
         "w": 12,
         "h": 9
       },
@@ -1745,12 +2091,12 @@
       }
     },
     {
-      "id": 12,
+      "id": 14,
       "title": "醫療｜基金 Top 10",
       "type": "table",
       "gridPos": {
         "x": 0,
-        "y": 50,
+        "y": 59,
         "w": 12,
         "h": 9
       },
