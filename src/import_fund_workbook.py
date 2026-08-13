@@ -5,13 +5,23 @@ from __future__ import annotations
 
 import argparse
 import csv
-from datetime import date, datetime
+from datetime import date, datetime, time, timedelta
 from pathlib import Path
 
 
 def usable_number(value):
     if isinstance(value, (int, float)) and not isinstance(value, bool):
         return float(value)
+    # Some numeric cells in the supplied XLSM use date/time number formats.
+    # openpyxl therefore returns their underlying Excel serial as datetime/time
+    # objects (for example NAV 35.01 becomes 1900-02-03 00:14:24).
+    if isinstance(value, datetime):
+        return (value - datetime(1899, 12, 30)).total_seconds() / 86400
+    if isinstance(value, time):
+        return (value.hour * 3600 + value.minute * 60 + value.second
+                + value.microsecond / 1_000_000) / 86400
+    if isinstance(value, timedelta):
+        return value.total_seconds() / 86400
     return None
 
 
@@ -81,7 +91,10 @@ def domestic_rows(workbook):
         if not name or not p:
             continue
         yield {
-            "category": category_for("台灣", row[3], name) or "taiwan",
+            # The domestic sheets are the authoritative Taiwan universe. Keep
+            # their funds in the Taiwan market bucket even when a name also
+            # contains a sector keyword such as technology or healthcare.
+            "category": "taiwan",
             "fund_code": "", "name": name, "as_of_date": row[1],
             "nav": row[4], "currency": row[5], "region": "台灣",
             "target": row[3], "sharpe": row[9],
@@ -123,7 +136,7 @@ def main() -> int:
               "region", "target", "return_1y", "momentum_6m", "sharpe", "source_sheet"]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(cleaned)
     print(f"{len(cleaned)} verified snapshot rows -> {args.output}")

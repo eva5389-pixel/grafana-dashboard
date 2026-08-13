@@ -26,7 +26,9 @@ BENCHMARK_KEYWORDS = {
 def eligible(item: dict[str, str]) -> bool:
     """Reject rows that the source workbook mapped to the wrong market bucket."""
     category, region = item.get("category", ""), item.get("region", "")
-    if "已撤銷核備" in item.get("name", ""):
+    name = item.get("name", "")
+    if ("已撤銷核備" in name or "單日正向2倍" in name
+            or "單日正向兩倍" in name or "單日反向" in name):
         return False
     expected_region = {
         "taiwan": {"台灣"}, "japan": {"日本"}, "korea": {"韓國"},
@@ -34,6 +36,8 @@ def eligible(item: dict[str, str]) -> bool:
     }
     if category in expected_region and region not in expected_region[category]:
         return False
+    if category == "taiwan":
+        return item.get("target", "").startswith("國內股票開放型")
     if category in expected_region:
         return item.get("target", "") in {"股票型", "中小型股", "REIT", "資訊科技股", "必需性消費股", "公共事業股"}
     return True
