@@ -1,0 +1,6 @@
+﻿rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,status
+1,歐洲,富邦富時歐洲ETF基金,,,VGK,31.52,,,6.89,0.810,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）
+2,歐洲,摩根大歐洲基金-數位型,,,VGK,28.37,,,6.43,0.830,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）
+3,歐洲,元大歐洲50基金,,,VGK,24.79,,,9.52,0.720,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）
+4,歐洲,聯博歐洲多重資產基金A2不配息(台幣)(本基金得投資於非投資等級之高風險債券且配息來源可能為本金及收益平準金),,,VGK,18.51,,,3.11,0.580,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）
+5,歐洲,瀚亞歐洲基金,,,VGK,15.76,,,3.24,0.390,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）

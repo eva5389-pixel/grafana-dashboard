@@ -1,0 +1,4 @@
+﻿rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,status
+1,巴西,元大巴西指數基金,,,EWZ,39.36,,,-6.10,0.380,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）
+2,巴西,野村巴西基金,,,EWZ,37.66,,,-6.72,0.350,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）
+3,巴西,瀚亞巴西基金,,,EWZ,30.81,,,-9.31,0.320,,,,待資料,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）

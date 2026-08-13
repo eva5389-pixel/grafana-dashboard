@@ -19,16 +19,25 @@ from update_dashboard import (
 BENCHMARK_KEYWORDS = {
     "taiwan": "EWT.US", "japan": "EWJ.US", "korea": "EWY.US",
     "hong_kong": "EWH.US", "usa": "SPY.US", "finance": "XLF.US",
-    "healthcare": "IBB.US",
+    "healthcare": "IBB.US", "europe": "VGK.US", "brazil": "EWZ.US",
+    "bond": "AGG.US",
 }
 
 
 def supplemental_market(name: str, target: str) -> str | None:
     """Classify Taiwan-domiciled funds by their actual overseas mandate."""
-    if "印度" in name and "股票" in target and "反向" not in name and "正向2倍" not in name and "正向兩倍" not in name:
+    excluded = ("反向" in name or "正向2倍" in name or "正向兩倍" in name)
+    if "債券" in target and "股票債券" not in target and "多重資產" not in target and not excluded:
+        return "bond"
+    if "巴西" in name and any(word in target for word in ("股票", "指數")) and not excluded:
+        return "brazil"
+    if any(word in name for word in ("歐洲", "歐盟", "歐元區")) and any(
+            word in target for word in ("股票", "指數", "多重資產")) and not excluded:
+        return "europe"
+    if "印度" in name and "股票" in target and not excluded:
         return "india"
     asean_words = ("東協", "東南亞", "越南", "泰國基金", "馬來西亞", "印尼", "菲律賓")
-    if any(word in name for word in asean_words) and "股票" in target and "反向" not in name and "正向2倍" not in name and "正向兩倍" not in name:
+    if any(word in name for word in asean_words) and "股票" in target and not excluded:
         return "asean"
     return None
 

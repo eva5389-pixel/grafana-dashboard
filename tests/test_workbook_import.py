@@ -28,6 +28,18 @@ class WorkbookImportTest(unittest.TestCase):
     def test_cathay_name_is_not_mistaken_for_thailand(self):
         self.assertIsNone(supplemental_market("國泰國泰基金", "國內股票開放型一般股票型"))
 
+    def test_bond_fund_is_classified(self):
+        self.assertEqual(supplemental_market("全球投資級債券基金", "債券型海外債券投資等級"), "bond")
+
+    def test_balanced_fund_is_not_classified_as_bond(self):
+        self.assertIsNone(supplemental_market("環太平洋平衡基金", "股票債券平衡型跨國投資型"))
+
+    def test_europe_fund_is_classified(self):
+        self.assertEqual(supplemental_market("摩根大歐洲基金", "跨國投資股票型區域型"), "europe")
+
+    def test_brazil_fund_is_classified(self):
+        self.assertEqual(supplemental_market("野村巴西基金", "跨國投資股票型單一國家"), "brazil")
+
 
 if __name__ == "__main__":
     unittest.main()
