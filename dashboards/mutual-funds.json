@@ -41,7 +41,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,台灣,合庫台灣基金-A不配息(台幣),ACCB01-9610,,EWT,,,,,,,,待資料,待填Twelve Data代碼\n2,台灣,野村鴻運基金,AC0001,,EWT,,,,,,,,待資料,待填Twelve Data代碼\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,台灣,合庫台灣基金-A不配息(台幣),ACCB01-9610,,EWT,,,,,,,,,待資料,待填Morningstar或市場代碼\n2,台灣,野村鴻運基金,AC0001,,EWT,,,,,,,,,待資料,待填Morningstar或市場代碼\n",
           "format": "table",
           "parser": "backend"
         }
@@ -60,8 +60,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -79,6 +80,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -188,7 +190,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,日本,瀚亞投資-日本動力股票基金,IOFA8-2824,,EWJ,63.58,,,,,,,待資料,MoneyDJ報酬；其餘待API\n2,日本,安本日本永續股票基金,ANZH4-1327,,EWJ,51.01,,,,,,,待資料,MoneyDJ報酬；其餘待API\n3,日本,法巴日本小型股票基金,FLFE9-4448,,EWJ,49.56,,,,,,,待資料,MoneyDJ報酬；其餘待API\n4,日本,法巴日本股票基金,PAZ11-4402,,EWJ,45.55,,,,,,,待資料,MoneyDJ報酬；其餘待API\n5,日本,施羅德日本優勢基金,PYZL2-15D4,,EWJ,43.74,,,,,,,待資料,MoneyDJ報酬；其餘待API\n6,日本,景順日本股票優勢基金,CTZR2-0178,,EWJ,41.38,,,,,,,待資料,MoneyDJ報酬；其餘待API\n7,日本,利安日本增長基金,LIC39-4708,,EWJ,40.51,,,,,,,待資料,MoneyDJ報酬；其餘待API\n8,日本,安本日本小型公司永續股票基金,ANZH3-1326,,EWJ,39.58,,,,,,,待資料,MoneyDJ報酬；其餘待API\n9,日本,富達日本價值基金,FTZA66-05G5,,EWJ,38.31,,,,,,,待資料,MoneyDJ報酬；其餘待API\n10,日本,M&G日本基金,MMG07-2907,,EWJ,35.89,,,,,,,待資料,MoneyDJ報酬；其餘待API\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,日本,瀚亞投資-日本動力股票基金,IOFA8-2824,,EWJ,63.58,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n2,日本,安本日本永續股票基金,ANZH4-1327,,EWJ,51.01,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n3,日本,法巴日本小型股票基金,FLFE9-4448,,EWJ,49.56,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n4,日本,法巴日本股票基金,PAZ11-4402,,EWJ,45.55,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n5,日本,施羅德日本優勢基金,PYZL2-15D4,,EWJ,43.74,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n6,日本,景順日本股票優勢基金,CTZR2-0178,,EWJ,41.38,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n7,日本,利安日本增長基金,LIC39-4708,,EWJ,40.51,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n8,日本,安本日本小型公司永續股票基金,ANZH3-1326,,EWJ,39.58,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n9,日本,富達日本價值基金,FTZA66-05G5,,EWJ,38.31,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n10,日本,M&G日本基金,MMG07-2907,,EWJ,35.89,,,,,,,,待資料,MoneyDJ報酬；其餘待API\n",
           "format": "table",
           "parser": "backend"
         }
@@ -207,8 +209,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -226,6 +229,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -335,7 +339,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,韓國,基金清單建置中,,,EWY,,,,,,,,待資料,待建立基金清單\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,韓國,基金清單建置中,,,EWY,,,,,,,,,待資料,待建立基金清單\n",
           "format": "table",
           "parser": "backend"
         }
@@ -354,8 +358,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -373,6 +378,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -482,7 +488,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,香港,基金清單建置中,,,EWH,,,,,,,,待資料,待建立基金清單\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,香港,基金清單建置中,,,EWH,,,,,,,,,待資料,待建立基金清單\n",
           "format": "table",
           "parser": "backend"
         }
@@ -501,8 +507,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -520,6 +527,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -629,7 +637,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,中國,摩根中國雙息平衡基金-月配型(台幣),ACJF132-8434,,MCHI,,,,,,,,待資料,待填Twelve Data代碼\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,中國,摩根中國雙息平衡基金-月配型(台幣),ACJF132-8434,,MCHI,,,,,,,,,待資料,待填Morningstar或市場代碼\n",
           "format": "table",
           "parser": "backend"
         }
@@ -648,8 +656,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -667,6 +676,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -776,7 +786,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,美國,基金清單建置中,,,SPY,,,,,,,,待資料,待建立基金清單\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,美國,基金清單建置中,,,SPY,,,,,,,,,待資料,待建立基金清單\n",
           "format": "table",
           "parser": "backend"
         }
@@ -795,8 +805,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -814,6 +825,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -923,7 +935,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,半導體,基金清單建置中,,,SOXX,,,,,,,,待資料,待建立基金清單\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,半導體,基金清單建置中,,,SOXX,,,,,,,,,待資料,待建立基金清單\n",
           "format": "table",
           "parser": "backend"
         }
@@ -942,8 +954,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -961,6 +974,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -1070,7 +1084,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,光通訊,基金清單建置中,,,IYZ,,,,,,,,待資料,待建立基金清單\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,光通訊,基金清單建置中,,,IYZ,,,,,,,,,待資料,待建立基金清單\n",
           "format": "table",
           "parser": "backend"
         }
@@ -1089,8 +1103,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -1108,6 +1123,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -1217,7 +1233,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,量子電腦,基金清單建置中,,,QTUM,,,,,,,,待資料,待建立基金清單\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,量子電腦,基金清單建置中,,,QTUM,,,,,,,,,待資料,待建立基金清單\n",
           "format": "table",
           "parser": "backend"
         }
@@ -1236,8 +1252,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -1255,6 +1272,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -1364,7 +1382,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,金融,基金清單建置中,,,XLF,,,,,,,,待資料,待建立基金清單\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,金融,基金清單建置中,,,XLF,,,,,,,,,待資料,待建立基金清單\n",
           "format": "table",
           "parser": "backend"
         }
@@ -1383,8 +1401,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -1402,6 +1421,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }
@@ -1511,7 +1531,7 @@
           "refId": "A",
           "type": "csv",
           "source": "inline",
-          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,signal,status\n1,醫療,富蘭克林華美全球醫療保健基金(台幣),ACFT73-9209,,XLV,,,,,,,,待資料,待填Twelve Data代碼\n",
+          "data": "rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,status\n1,醫療,富蘭克林華美全球醫療保健基金(台幣),ACFT73-9209,,XLV,,,,,,,,,待資料,待填Morningstar或市場代碼\n",
           "format": "table",
           "parser": "backend"
         }
@@ -1530,8 +1550,9 @@
               "sharpe": 6,
               "max_drawdown": 7,
               "recovery_days": 8,
-              "signal": 9,
-              "status": 10
+              "score": 9,
+              "signal": 10,
+              "status": 11
             },
             "excludeByName": {
               "category_name": true,
@@ -1549,6 +1570,7 @@
               "sharpe": "夏普",
               "max_drawdown": "最大回撤%",
               "recovery_days": "恢復天數",
+              "score": "綜合評分",
               "signal": "訊號",
               "status": "資料狀態"
             }

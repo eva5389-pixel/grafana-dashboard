@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch Twelve Data daily prices and build ranked Grafana CSV inputs.
+"""Build ranked Grafana CSV inputs from interchangeable fund-data providers.
 
 Only instruments with an explicit Twelve Data symbol are fetched. Missing symbols
 remain visible as pending rows so the dashboard never substitutes invented data.
@@ -8,6 +8,7 @@ remain visible as pending rows so the dashboard never substitutes invented data.
 from __future__ import annotations
 
 import csv
+import importlib
 import json
 import math
 import os
@@ -149,6 +150,43 @@ def fetch_market_closes(symbol: str, twelve_key: str, apify_token: str) -> tuple
     raise RuntimeError("; ".join(errors) or "No market-data credential")
 
 
+def fetch_mstarpy_nav(identifier: str, session=None) -> tuple[list[float], object]:
+    """Return Morningstar NAV history through optional MIT-licensed mstarpy.
+
+    The provider is opt-in because current mstarpy versions launch Chrome.  A
+    caller-owned session is returned and reused to avoid one browser per fund.
+    """
+    module = importlib.import_module("mstarpy")
+    session = session or module.MorningstarSession()
+    fund = module.Funds(identifier, session=session)
+    end = datetime.now(timezone.utc)
+    start = end - timedelta(days=800)
+    points = fund.nav(start, end) or []
+    dated = sorted(
+        ((point.get("date"), point.get("nav")) for point in points),
+        key=lambda item: item[0] or "",
+    )
+    values = [float(nav) for _, nav in dated if nav not in (None, "")]
+    if len(values) < 2:
+        raise RuntimeError(f"No usable Morningstar NAV for {identifier}")
+    return values, session
+
+
+def quantstats_metrics(values: list[float], risk_free_rate: float) -> dict[str, float | None]:
+    """Optionally cross-check Sharpe and drawdown with Apache-2 QuantStats."""
+    try:
+        qs = importlib.import_module("quantstats")
+        pd = importlib.import_module("pandas")
+    except ImportError:
+        return {}
+    series = pd.Series(daily_returns(values))
+    result = {
+        "sharpe": float(qs.stats.sharpe(series, rf=risk_free_rate, periods=252)),
+        "max_drawdown": float(qs.stats.max_drawdown(series)),
+    }
+    return {key: value for key, value in result.items() if math.isfinite(value)}
+
+
 def fmt(value: float | int | None, percent: bool = False) -> str:
     if value is None:
         return ""
@@ -163,14 +201,23 @@ def signal(row: dict) -> str:
     return "買進" if votes == 3 else "觀察" if votes == 2 else "賣出"
 
 
-def score(row: dict) -> float:
-    values = (
-        row.get("return_1y") or -9,
-        row.get("excess_return_1y") or -9,
-        row.get("momentum_6m") or -9,
-        (row.get("sharpe") or -9) / 5,
-        (row.get("max_drawdown") or -1) / 2,
-    )
+def score(row: dict) -> float | None:
+    """Composite score is published only when every required metric exists."""
+    required = ("return_1y", "excess_return_1y", "momentum_6m", "sharpe", "max_drawdown")
+    if any(row.get(key) is None for key in required):
+        return None
+    return (float(row["return_1y"]) + float(row["excess_return_1y"])
+            + float(row["momentum_6m"]) + float(row["sharpe"]) / 5
+            + float(row["max_drawdown"]) / 2)
+
+
+def ranking_score(row: dict) -> float:
+    def present(key: str, missing: float) -> float:
+        value = row.get(key)
+        return missing if value is None else float(value)
+    values = (present("return_1y", -9), present("excess_return_1y", -9),
+              present("momentum_6m", -9), present("sharpe", -9) / 5,
+              present("max_drawdown", -1) / 2)
     return sum(values)
 
 
@@ -185,40 +232,56 @@ def main() -> int:
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
     categories = {item["id"]: item for item in config["categories"]}
     benchmark_cache: dict[str, list[float]] = {}
+    mstarpy_session = None
+    enable_mstarpy = os.environ.get("ENABLE_MSTARPY", "0") == "1"
     rows: list[dict] = []
 
     for fund in config["funds"]:
         category = categories[fund["category"]]
         symbol = fund.get("twelve_data_symbol", "").strip()
+        morningstar_id = fund.get("morningstar_id", "").strip()
         row = {**fund, "category_name": category["name"], "benchmark": category["benchmark_symbol"]}
-        if symbol and (api_key or apify_token):
+        fund_values = None
+        provider = None
+        if morningstar_id and enable_mstarpy:
+            try:
+                fund_values, mstarpy_session = fetch_mstarpy_nav(morningstar_id, mstarpy_session)
+                provider = "Morningstar/MStarpy"
+            except Exception as exc:
+                row["status"] = f"Morningstar錯誤: {type(exc).__name__}"
+        if fund_values is None and symbol and (api_key or apify_token):
             try:
                 fund_values, provider = fetch_market_closes(symbol, api_key, apify_token)
+            except Exception as exc:
+                row["status"] = f"市場API錯誤: {type(exc).__name__}"
+        if fund_values is not None:
+            try:
                 benchmark_symbol = category["benchmark_symbol"]
                 if benchmark_symbol not in benchmark_cache:
                     benchmark_cache[benchmark_symbol], _ = fetch_market_closes(benchmark_symbol, api_key, apify_token)
                 benchmark_values = benchmark_cache[benchmark_symbol]
                 length = min(len(fund_values), len(benchmark_values))
                 fund_values, benchmark_values = fund_values[-length:], benchmark_values[-length:]
+                risk_metrics = quantstats_metrics(fund_values[-252:], config["risk_free_rate"])
                 row.update({
                     "return_1y": pct_change(fund_values, min(252, length - 1)),
                     "benchmark_return_1y": pct_change(benchmark_values, min(252, length - 1)),
                     "momentum_6m": pct_change(fund_values, min(126, length - 1)),
-                    "sharpe": sharpe(fund_values[-252:], config["risk_free_rate"]),
-                    "max_drawdown": max_drawdown(fund_values),
+                    "sharpe": risk_metrics.get("sharpe", sharpe(fund_values[-252:], config["risk_free_rate"])),
+                    "max_drawdown": risk_metrics.get("max_drawdown", max_drawdown(fund_values)),
                     "recovery_days": recovery_days(fund_values),
                     "status": f"已更新（{provider}）",
                 })
                 if row["return_1y"] is not None and row["benchmark_return_1y"] is not None:
                     row["excess_return_1y"] = row["return_1y"] - row["benchmark_return_1y"]
-            except Exception as exc:  # keep one bad symbol from blocking every category
-                row["status"] = f"API錯誤: {type(exc).__name__}"
+            except Exception as exc:  # keep one bad instrument from blocking every category
+                row["status"] = f"指標錯誤: {type(exc).__name__}"
         else:
             if fund.get("seed_return_1y") is not None:
                 row["return_1y"] = fund["seed_return_1y"]
                 row["status"] = "MoneyDJ報酬；其餘待API"
             else:
-                row["status"] = "待填Twelve Data代碼"
+                row["status"] = "待填Morningstar或市場代碼"
         row["signal"] = signal(row)
         row["score"] = score(row)
         rows.append(row)
@@ -237,16 +300,16 @@ def main() -> int:
                 "benchmark": category["benchmark_symbol"],
                 "signal": "待資料",
                 "status": "待建立基金清單",
-                "score": -99,
+                "score": None,
             })
     for category_rows in grouped.values():
-        category_rows.sort(key=score, reverse=True)
+        category_rows.sort(key=ranking_score, reverse=True)
         for rank, row in enumerate(category_rows[:10], 1):
             row["rank"] = rank
 
     DATA.mkdir(exist_ok=True)
     CATEGORY_DATA.mkdir(parents=True, exist_ok=True)
-    fields = ["rank", "category_name", "name", "moneydj_id", "twelve_data_symbol", "benchmark", "return_1y", "benchmark_return_1y", "excess_return_1y", "momentum_6m", "sharpe", "max_drawdown", "recovery_days", "signal", "status"]
+    fields = ["rank", "category_name", "name", "moneydj_id", "twelve_data_symbol", "benchmark", "return_1y", "benchmark_return_1y", "excess_return_1y", "momentum_6m", "sharpe", "max_drawdown", "recovery_days", "score", "signal", "status"]
 
     def write_csv(path: Path, selected: list[dict]) -> None:
         with path.open("w", newline="", encoding="utf-8-sig") as handle:
@@ -257,6 +320,7 @@ def main() -> int:
                 for key in ("return_1y", "benchmark_return_1y", "excess_return_1y", "momentum_6m", "max_drawdown"):
                     output[key] = fmt(item.get(key), percent=True)
                 output["sharpe"] = fmt(item.get("sharpe"))
+                output["score"] = fmt(item.get("score"))
                 writer.writerow(output)
 
     ranked = [row for key in categories for row in grouped.get(key, [])[:10]]

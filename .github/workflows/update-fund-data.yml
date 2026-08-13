@@ -21,12 +21,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install fund analytics adapters
+        run: pip install -r requirements-optional.txt
       - name: Validate calculations
         run: python -m unittest discover -s tests -v
       - name: Update daily fund data
         env:
           TWELVE_DATA_API_KEY: ${{ secrets.TWELVE_DATA_API_KEY }}
           APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
+          ENABLE_MSTARPY: "1"
         run: python src/update_dashboard.py
       - name: Generate Grafana dashboard
         run: python src/generate_dashboard.py
@@ -34,6 +37,7 @@ jobs:
         env:
           TWELVE_DATA_API_KEY: ${{ secrets.TWELVE_DATA_API_KEY }}
           APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
+          ENABLE_MSTARPY: "1"
         run: |
           if [ "$(date -u -d tomorrow +%d)" = "01" ]; then
             MONTH_END=1 python src/update_dashboard.py

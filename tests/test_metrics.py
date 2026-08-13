@@ -22,6 +22,14 @@ class MetricsTest(unittest.TestCase):
     def test_sharpe_handles_short_series(self):
         self.assertIsNone(MODULE.sharpe([100, 101], 0.015))
 
+    def test_score_does_not_treat_zero_as_missing(self):
+        row = {"return_1y": 0, "excess_return_1y": 0, "momentum_6m": 0,
+               "sharpe": 0, "max_drawdown": 0}
+        self.assertEqual(MODULE.score(row), 0)
+
+    def test_score_is_blank_when_metrics_are_incomplete(self):
+        self.assertIsNone(MODULE.score({"return_1y": 0.1}))
+
 
 if __name__ == "__main__":
     unittest.main()

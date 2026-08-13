@@ -15,6 +15,8 @@
 
 - 基富通公開基金總覽用於核對基金名稱、分類及網站公布的績效；其頁面標示基金資料來自 Morningstar。
 - Twelve Data 優先用於設定檔中有明確代碼的市場價格與 Benchmark 歷史序列；失敗時以 Apify/Yahoo Finance 備援。
+- 設定 `morningstar_id` 的基金可透過 MIT 授權的 MStarpy 取得 Morningstar 公開淨值；此來源為選用功能，失敗時安全降級。
+- Sharpe 與最大回撤以 Apache-2.0 授權的 QuantStats 交叉計算；套件不可用時使用本專案內建公式。
 - 網站未提供的歷史資料不推測、不補值；儀表板會顯示「待資料」。
 - 不使用基富通登入帳戶資料，也不以未公開介面繞過網站限制。
 
@@ -29,3 +31,9 @@ GitHub Actions Repository Secrets 使用 `TWELVE_DATA_API_KEY` 與 `APIFY_API_TO
 3. 在匯入畫面選擇剛建立的 Infinity data source。
 
 資料為每日淨值型資料，不代表盤中即時價格。訊號僅供研究參考，不構成投資建議。
+
+## 開源元件
+
+- MStarpy（MIT）：基金搜尋與公開淨值介接。
+- QuantStats（Apache-2.0）：報酬序列風險指標。
+- 本專案不複製第三方資料庫；僅在更新時呼叫已設定的資料來源。
