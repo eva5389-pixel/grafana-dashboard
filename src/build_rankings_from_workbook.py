@@ -26,6 +26,8 @@ BENCHMARK_KEYWORDS = {
 def eligible(item: dict[str, str]) -> bool:
     """Reject rows that the source workbook mapped to the wrong market bucket."""
     category, region = item.get("category", ""), item.get("region", "")
+    if "已撤銷核備" in item.get("name", ""):
+        return False
     expected_region = {
         "taiwan": {"台灣"}, "japan": {"日本"}, "korea": {"韓國"},
         "hong_kong": {"香港"}, "china": {"中國", "大中華"}, "usa": {"美國"},
@@ -135,7 +137,12 @@ def main() -> int:
     CATEGORY_DATA.mkdir(parents=True, exist_ok=True)
     for category, meta in categories.items():
         rows = grouped.get(category, [])
-        rows.sort(key=lambda r: (r["score"] is not None, r["score"] or -999), reverse=True)
+        # A missing benchmark must not preserve arbitrary workbook order. Fall
+        # back to the published one-year return until excess return is available.
+        rows.sort(key=lambda r: (
+            r["score"] is not None,
+            r["score"] if r["score"] is not None else (r["return_1y"] if r["return_1y"] is not None else -999),
+        ), reverse=True)
         deduped, seen = [], set()
         for row in rows:
             key = family_key(row["name"])
