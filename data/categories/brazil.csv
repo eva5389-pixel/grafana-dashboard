@@ -1,4 +1,4 @@
-﻿rank,category_name,name,moneydj_id,twelve_data_symbol,benchmark,return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status
-1,巴西,元大巴西指數基金,,,EWZ,39.36,,,-6.10,0.380,,,,待資料,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）
-2,巴西,野村巴西基金,,,EWZ,37.66,,,-6.72,0.350,,,,待資料,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）
-3,巴西,瀚亞巴西基金,,,EWZ,30.81,,,-9.31,0.320,,,,待資料,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）
+﻿rank,category_name,name,isin,currency,distribution,moneydj_id,twelve_data_symbol,benchmark,return_1y,distribution_yield_12m,total_return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status
+1,巴西,元大巴西指數基金,待核實,台幣,否,ACKY35,,EWZ,39.36,不適用,39.36,,,-6.10,0.380,-19.44,,,待資料,,,,,,,,,,,,,,,,,已更新（MoneyDJ歷史淨值至 20260812）
+2,巴西,野村巴西基金,待核實,台幣,否,ACIC29,,EWZ,37.66,不適用,37.66,,,-6.72,0.350,-20.11,,,待資料,,,,,,,,,,,,,,,,,已更新（MoneyDJ歷史淨值至 20260812）
+3,巴西,瀚亞巴西基金,待核實,台幣,否,ACCP32,,EWZ,30.81,不適用,30.81,,,-9.31,0.320,-19.08,,,待資料,,,,,,,,,,,,,,,,,已更新（MoneyDJ歷史淨值至 20260812）

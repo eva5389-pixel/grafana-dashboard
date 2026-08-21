@@ -1,0 +1,47 @@
+[
+  {
+    "name": "路博邁台灣5G股票基金N月配型",
+    "coverage": 4,
+    "exposure": 10.86,
+    "return_1y": 146.15,
+    "holdings": "聯亞、穩懋、光聖、環宇-KY",
+    "as_of": "2026-03-31",
+    "source": "https://tsb.moneydj.com/w/wr/wr902.djhtm?a=ACNB46-"
+  },
+  {
+    "name": "群益店頭市場基金",
+    "coverage": 2,
+    "exposure": 11.60,
+    "return_1y": 94.01,
+    "holdings": "穩懋、聯亞",
+    "as_of": "2026-05-31",
+    "source": "https://bokfund.moneydj.com/w/wr/wr04.djhtm?a=AC0028-7105"
+  },
+  {
+    "name": "富邦台灣心基金",
+    "coverage": 2,
+    "exposure": 10.96,
+    "return_1y": 99.15,
+    "holdings": "聯亞、穩懋",
+    "as_of": "2026-05-31",
+    "source": "https://chbfund.moneydj.com/w/wr/wr04.djhtm?a=ACCT01-6985"
+  },
+  {
+    "name": "元大二○○一基金",
+    "coverage": 1,
+    "exposure": 6.02,
+    "return_1y": 163.58,
+    "holdings": "聯亞",
+    "as_of": "2026-05-31",
+    "source": "https://cotabank.moneydj.com/mobile/a4.aspx?a=AC0017-0219"
+  },
+  {
+    "name": "富邦上選基金-A類型",
+    "coverage": 1,
+    "exposure": 3.58,
+    "return_1y": 101.22,
+    "holdings": "聯亞",
+    "as_of": "2026-06-30",
+    "source": "https://chbfund.moneydj.com/w/wr/wr04.djhtm?a=ACJS03-7708"
+  }
+]

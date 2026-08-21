@@ -94,6 +94,19 @@ def main() -> int:
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
     categories = {item["id"]: item for item in config["categories"]}
     raw = list(csv.DictReader(source.open(encoding="utf-8-sig")))
+    distributing_fund_overrides = {
+        "國泰臺韓科技基金",
+        "富邦台灣科技指數基金(本基金之配息來源可能為收益平準金)",
+        "元大台灣電子科技基金",
+    }
+    metadata = {item["name"]: {
+        "isin": "待核實",
+        "currency": item.get("currency") or "待核實",
+        "distribution": "是" if (
+            item["name"] in distributing_fund_overrides
+            or any(word in item["name"] for word in ("配息", "月配", "季配", "年配", "穩定月收"))
+        ) else "否",
+    } for item in raw}
     benchmarks = {}
     for row in raw:
         keyword = BENCHMARK_KEYWORDS.get(row["category"])
@@ -127,6 +140,7 @@ def main() -> int:
             "momentum_6m": momentum, "sharpe": sharpe_value, "max_drawdown": None,
             "recovery_days": None, "score": None,
             "status": f"已驗證（活動績效表 {item.get('as_of_date','')}；回撤/恢復期資料不足）",
+            **metadata[item["name"]],
         }
         if all(row.get(key) is not None for key in ("return_1y", "excess_return_1y", "momentum_6m", "sharpe")):
             row["score"] = (row["return_1y"] + row["excess_return_1y"]
@@ -180,6 +194,7 @@ def main() -> int:
             "quantum_holdings": holding["holdings"],
             "holdings_as_of": holding["as_of"],
             "status": f"已驗證量子供應鏈持股；Benchmark資料不足；{holding['source']}",
+            **metadata[item["name"]],
         })
     optical_path = Path(__file__).resolve().parents[1] / "config" / "optical_holdings.json"
     for holding in json.loads(optical_path.read_text(encoding="utf-8")):
@@ -305,6 +320,24 @@ def main() -> int:
                               + match["max_drawdown"] / 2)
         match["signal"] = signal(match)
         match["status"] = "已更新（Yahoo台灣下載 + 活動績效表 Benchmark）"
+    moneydj_path = Path(__file__).resolve().parents[1] / "config" / "moneydj_metrics.json"
+    if moneydj_path.exists():
+        moneydj = json.loads(moneydj_path.read_text(encoding="utf-8")).get("funds", {})
+        for source_rows in grouped.values():
+            for row in source_rows:
+                metric = moneydj.get(row.get("name", ""))
+                if not metric:
+                    continue
+                row["moneydj_id"] = metric["moneydj_id"]
+                row["max_drawdown"] = metric["max_drawdown"]
+                row["recovery_days"] = metric["recovery_days"]
+                if all(row.get(key) is not None for key in (
+                        "return_1y", "excess_return_1y", "momentum_6m", "sharpe", "max_drawdown")):
+                    row["score"] = (row["return_1y"] + row["excess_return_1y"]
+                                    + row["momentum_6m"] + row["sharpe"] / 5
+                                    + row["max_drawdown"] / 2)
+                row["signal"] = signal(row)
+                row["status"] = f"已更新（MoneyDJ歷史淨值至 {metric['end']}）"
     # Cross-category shortlist: use published one-year performance, remove the
     # same fund/share-class family when it appears in multiple market or theme
     # panels, and retain its original benchmark for context.
@@ -331,8 +364,8 @@ def main() -> int:
         grouped["overall_top5"].append(candidate)
         if len(grouped["overall_top5"]) == 5:
             break
-    fields = ["rank", "category_name", "name", "moneydj_id", "twelve_data_symbol", "benchmark",
-              "return_1y", "benchmark_return_1y", "excess_return_1y", "momentum_6m", "sharpe",
+    fields = ["rank", "category_name", "name", "isin", "currency", "distribution", "moneydj_id", "twelve_data_symbol", "benchmark",
+              "return_1y", "distribution_yield_12m", "total_return_1y", "benchmark_return_1y", "excess_return_1y", "momentum_6m", "sharpe",
               "max_drawdown", "recovery_days", "score", "signal", "quantum_coverage",
               "quantum_exposure", "quantum_holdings", "holdings_as_of", "optical_coverage",
               "optical_exposure", "optical_holdings", "optical_as_of", "memory_coverage",
@@ -361,11 +394,13 @@ def main() -> int:
                      "signal": "待資料", "status": "活動績效表無對應資料"}]
         output = []
         for rank, row in enumerate(rows[:10], 1):
+            row["total_return_1y"] = row.get("return_1y")
+            row["distribution_yield_12m"] = "待核實" if row.get("distribution") == "是" else "不適用"
             formatted = {key: row.get(key, "") for key in fields}
             formatted["rank"] = rank
             if category == "overall_top5" and rank == 1:
                 formatted["name"] = f"👑 ✨ {formatted['name']} ✨"
-            for key in ("return_1y", "benchmark_return_1y", "excess_return_1y", "momentum_6m", "max_drawdown"):
+            for key in ("return_1y", "total_return_1y", "benchmark_return_1y", "excess_return_1y", "momentum_6m", "max_drawdown"):
                 formatted[key] = fmt(row.get(key), percent=True)
             formatted["quantum_exposure"] = fmt(row.get("quantum_exposure"), percent=True)
             formatted["optical_exposure"] = fmt(row.get("optical_exposure"), percent=True)
