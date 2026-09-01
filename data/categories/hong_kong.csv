@@ -1,5 +1,5 @@
 ﻿rank,category_name,name,isin,currency,distribution,moneydj_id,twelve_data_symbol,benchmark,return_1y,distribution_yield_12m,total_return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status
 1,香港,施羅德環球基金系列-香港股票(港元)C-累積,待核實,港幣,否,,,EWH,7.28,不適用,7.28,12.33,-5.05,-7.28,0.120,,,-0.027,賣出,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）
-2,香港,安聯香港股票基金-A配息類股(美元)(基金之配息來源可能為本金),待核實,美元,是,F000000F7U:FO,,EWH,4.85,待核實,4.85,12.33,-7.48,-4.52,0.239,-55.63,,-0.302,賣出,,,,,,,,,,,,,,,,,已更新（Yahoo台灣下載 + 活動績效表 Benchmark）
+2,香港,安聯香港股票基金-A配息類股(美元)(基金之配息來源可能為本金),待核實,美元,是,F000000F7U:FO,,EWH,1.06,待核實,1.06,12.33,-11.27,-3.45,0.079,-55.63,,-0.399,賣出,,,,,,,,,,,,,,,,,已更新（Yahoo台灣下載 + 活動績效表 Benchmark）
 3,香港,宏利環球基金-巨龍增長基金AA股(美元),待核實,美元,否,,,EWH,-29.40,不適用,-29.40,12.33,-41.73,-9.93,0.070,,,-0.797,賣出,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）
 4,香港,泓富產業信託0808.HK,待核實,港幣,否,,,EWH,-38.16,不適用,-38.16,12.33,-50.49,-27.69,0.040,,,-1.155,賣出,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）

@@ -1,2 +1,2 @@
 ﻿rank,category_name,name,isin,currency,distribution,moneydj_id,twelve_data_symbol,benchmark,return_1y,distribution_yield_12m,total_return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status
-1,半導體,貝萊德世界科技基金 A2,,,,F0GBR04AMX:FO,,SOXX,36.86,不適用,36.86,,,31.45,1.237,-28.22,52,,待資料,,,,,,,,,,,,,,,,,已更新（Yahoo台灣下載；Benchmark資料不足）
+1,半導體,貝萊德世界科技基金 A2,,,,F0GBR04AMX:FO,,SOXX,40.55,不適用,40.55,,,26.54,1.171,-28.22,52,,待資料,,,,,,,,,,,,,,,,,已更新（Yahoo台灣下載；Benchmark資料不足）
