@@ -1,5 +1,5 @@
 ﻿rank,category_name,name,isin,currency,distribution,moneydj_id,twelve_data_symbol,benchmark,return_1y,distribution_yield_12m,total_return_1y,benchmark_return_1y,excess_return_1y,momentum_6m,sharpe,max_drawdown,recovery_days,score,signal,quantum_coverage,quantum_exposure,quantum_holdings,holdings_as_of,optical_coverage,optical_exposure,optical_holdings,optical_as_of,memory_coverage,memory_exposure,memory_holdings,memory_as_of,robotics_coverage,robotics_exposure,robotics_holdings,robotics_as_of,status
-1,日本,瀚亞投資-日本動力股票基金Az(南非幣避險),待核實,南非幣,否,F00000W0VS:FO,,EWJ,66.08,不適用,66.08,29.10,36.98,18.39,2.636,-38.77,209,1.548,買進,,,,,,,,,,,,,,,,,已更新（Yahoo台灣下載 + 活動績效表 Benchmark）
+1,日本,瀚亞投資-日本動力股票基金Az(南非幣避險),待核實,南非幣,否,F00000W0VS:FO,,EWJ,65.07,不適用,65.07,29.10,35.97,18.10,2.611,-38.77,209,1.520,買進,,,,,,,,,,,,,,,,,已更新（Yahoo台灣下載 + 活動績效表 Benchmark）
 2,日本,安本基金-日本永續股票基金X累積美元避險,待核實,美元,否,,,EWJ,52.10,不適用,52.10,29.10,23.00,15.03,1.050,,,1.111,買進,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）
 3,日本,駿利亨德森遠見基金-日本小型公司基金I2美元避險,待核實,美元,否,,,EWJ,48.34,不適用,48.34,29.10,19.24,17.39,1.140,,,1.078,買進,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-11；回撤/恢復期資料不足）
 4,日本,法巴日本股票基金H(美元),待核實,美元,否,,,EWJ,50.13,不適用,50.13,29.10,21.03,12.37,1.050,,,1.045,買進,,,,,,,,,,,,,,,,,已驗證（活動績效表 2026-08-10；回撤/恢復期資料不足）
